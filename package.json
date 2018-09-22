@@ -1,0 +1,23 @@
+{
+  "name": "tetrisweb",
+  "version": "1.0.0",
+  "description": "Tetris clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bchan061/tetrisweb.git"
+  },
+  "author": "Brandon Chan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bchan061/tetrisweb/issues"
+  },
+  "homepage": "https://github.com/bchan061/tetrisweb#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "pixi.js": "^4.8.2"
+  }
+}
