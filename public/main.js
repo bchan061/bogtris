@@ -1,12 +1,18 @@
 const app = new PIXI.Application({
-    width: 320,
+    width: 480,
     height: 480
 })
 
-document.body.appendChild(app.view)
+PIXI.loader
+    .add("assets/block.svg")
+.load(init)
 
-let game = new Game(app)
+function init() {
+    document.getElementById("gameDiv").appendChild(app.view)
 
-app.ticker.add(
-    (dt) => game.update(dt)
-)
+    let game = new Game(app)
+
+    app.ticker.add(
+        (dt) => game.update(dt)
+    )
+}
