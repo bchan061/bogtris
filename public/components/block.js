@@ -2,7 +2,6 @@ class Block {
     constructor(board) {
         this.board = board
         this.sprite = new PIXI.Sprite(board.blockTexture)
-        console.log(this.board.blockTexture.width)
         this.sprite.scale.set(this.board.blockSize / this.board.blockTexture.width)
 
         this.reset()

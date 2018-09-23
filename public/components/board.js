@@ -10,7 +10,7 @@ class Board {
         this.obstructTop = OBSTRUCT_TOP
         this.game = game
         this.board = new Array(this.height)
-        this.offset = new PIXI.Point(0, 0)
+        this.offset = new PIXI.Point(0, 18)
         this.blockTexture = PIXI.loader.resources["assets/block.svg"].texture
 
         this.initBoard = this.initBoard.bind(this)
@@ -24,7 +24,6 @@ class Board {
             for (let x = 0; x < this.width; x++) {
                 let block = new Block(this)
                 block.set(x, y)
-                block.random()
 
                 this.game.application.stage.addChild(block.sprite)
 
