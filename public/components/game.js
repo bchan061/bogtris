@@ -5,6 +5,7 @@ class Game {
     constructor(application) {
         this.application = application
         this.board = new Board(this)
+        this.tetrominoes = new Tetrominoes()
     }
 
     setInput(input) {
@@ -17,13 +18,12 @@ class Game {
      */
     update(delta) {
         this.render()
-        console.log(this.input.keys["Hold"].isPressed())
     }
 
     /**
      * Renders.
      */
     render() {
-
+        this.board.update()
     }
 }

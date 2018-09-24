@@ -33,4 +33,8 @@ class Board {
             this.board[y] = row
         }
     }
+
+    update() {
+        
+    }
 }
