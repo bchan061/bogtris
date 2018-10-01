@@ -19,6 +19,6 @@ function init() {
     window.onkeyup = (keycode) => input.onKeyUp(keycode.which)
 
     app.ticker.add(
-        (dt) => game.update(dt)
+        (dt) => game.update(dt, app.ticker.elapsedMS)
     )
 }

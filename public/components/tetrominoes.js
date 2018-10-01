@@ -1,8 +1,14 @@
 class Tetrominoes {
+    /**
+     * Initializes the tetrominoes.
+     */
     constructor() {
         this.createTetrominoes()
     }
 
+    /**
+     * Creates the tetrominoes.
+     */
     createTetrominoes() {
         this.iTetromino = new Tetromino(
             "I",
@@ -33,7 +39,7 @@ class Tetrominoes {
             ]
         )
         this.lTetromino = new Tetromino(
-            "J",
+            "l",
             Colors.ORANGE,
             [
                 [0, 0, 1],
@@ -67,5 +73,20 @@ class Tetrominoes {
                 [0, 0, 0]
             ]
         )
+    }
+
+    /**
+     * Returns the appropriate spawning location for the tetromino.
+     * @param {object} tetromino the tetromino to spawn in
+     * @param {object} board the board
+     */
+    getSpawningLocation(tetromino, board) {
+        let top = board.obstructTop
+        let x = board.width / 2 - Math.ceil(tetromino.getWidth() / 2)
+
+        return {
+            x: x,
+            y: top
+        }
     }
 }

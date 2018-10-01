@@ -9,6 +9,14 @@ class Tetromino {
         this.generateRotationBoxes()
     }
 
+    getHeight() {
+        return this.getRotationBox().length
+    }
+
+    getWidth() {
+        return this.getRotationBox()[0].length
+    }
+
     reset() {
         this.currentShapeIndex = 0
     }
@@ -51,7 +59,7 @@ class Tetromino {
         for (let y = 0; y < this.shape.length; y++) {
             newShape3[y] = []
             for (let x = 0; x < this.shape[0].length; x++) {
-                newShape3[y][x] = this.shape[x][y]
+                newShape3[y][x] = this.shape[x][this.shape.length - 1 - y]
             }
         }
 
@@ -65,9 +73,9 @@ class Tetromino {
     logBox() {
         console.log(this.name + " Tetromino: ")
         let currentBox = this.getRotationBox()
-        for (let y = 0; y < this.shape.length; y++) {
-            let row = ""
-            for (let x = 0; x < this.shape[0].length; x++) {
+        for (let y = 0; y < this.getHeight(); y++) {
+            let row = "[" + y + "] "
+            for (let x = 0; x < this.getWidth(); x++) {
                 row += currentBox[y][x]
             }
             console.log(row)
