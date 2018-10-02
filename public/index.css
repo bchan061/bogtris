@@ -1,3 +1,7 @@
 #gameDiv {
     text-align: center;
 }
+
+canvas {
+    height: 90vmin;
+}

@@ -114,12 +114,38 @@ class Tetromino {
             console.log(row)
         }
     }
-
+    
     /**
-     * Tries to rotate the tetromino in the current board and location.
-     * May modify the location as part SRS.
+     * Tries to rotate the tetromino into the board, employing offsets if necessary.
+     * Should be overridden.
+     * @param {object} board the board
+     * @param {object} location the location of the tetromino
+     * @param {object} clockwise whether to rotate the piece clockwise
      */
-    tryRotate(board, location) {
-        
+    tryRotate(board, location, clockwise) {
+        if (clockwise) {
+            this.rotateRight()
+        } else {
+            this.rotateLeft()
+        }
+
+        if (
+            board.tetrominoCollides(
+                this,
+                location.x,
+                location.y
+            )
+        ) {
+            if (clockwise) {
+                this.rotateLeft()
+            } else {
+                this.rotateRight()
+            }
+
+            return false
+        }
+
+        Sounds.rotate.play()
+        return true
     }
 }

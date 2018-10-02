@@ -80,36 +80,9 @@ class Game {
      * @param {boolean} clockwise whether to rotate the tetromino clockwise or not
      */
     tryRotate(clockwise) {
-        /*
-          Thankfully, the game is synchronous, so we can just rotate the tetromino
-          and rotate it back if it won't work.
-        */
-
-        if (clockwise) {
-            this.currentTetromino.rotateRight()
-        } else {
-            this.currentTetromino.rotateLeft()
+        if (this.currentTetromino.tryRotate(this.board, this.tetrominoLocation, clockwise)) {
+            this.inactiveTimer.reset()
         }
-
-        if (
-            this.board.tetrominoCollides(
-                this.currentTetromino,
-                this.tetrominoLocation.x,
-                this.tetrominoLocation.y
-            )
-        ) {
-            if (clockwise) {
-                this.currentTetromino.rotateLeft()
-            } else {
-                this.currentTetromino.rotateRight()
-            }
-
-            return false
-        }
-
-        Sounds.rotate.play()
-        this.inactiveTimer.reset()
-        return true
     }
 
     /**
