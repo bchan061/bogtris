@@ -22,8 +22,10 @@ class Board {
         this.staticBoard = new Array(this.height)
         this.offset = new PIXI.Point(18, 18)
         this.blockTexture = PIXI.loader.resources["assets/block.svg"].texture
-
-        this.initBoard = this.initBoard.bind(this)
+        this.grid = new PIXI.Sprite(PIXI.loader.resources["assets/grid.svg"].texture)
+        this.grid.alpha = 0.5
+        this.grid.position.set(this.offset.x, this.offset.y + (this.obstructTop * this.blockSize))
+        this.grid.scale.set((this.width * this.blockSize) / this.grid.texture.width)
 
         this.initBoard()
     }
@@ -32,6 +34,8 @@ class Board {
      * Creates the arrays for the active and static block values.
      */
     initBoard() {
+        this.game.application.stage.addChild(this.grid)
+
         for (let y = 0; y < this.height; y++) {
             let spriteRow = new Array(this.width)
             let staticRow = new Array(this.width)
@@ -157,6 +161,7 @@ class Board {
                     if (block != null) {
                         block.setActive(true)
                         block.setColor(tetromino.color)
+                        block.setOpacity(1)
                     }
                 }
             }  
@@ -210,6 +215,90 @@ class Board {
     }
 
     /**
+     * Draws the ghost pieces underneath the tetromino.
+     * @param {object} tetromino the tetromino to draw
+     * @param {object} location the location of the tetromino
+     */
+    drawGhostPieces(tetromino, location) {
+        let x = location.x
+        let y = location.y
+
+        /* First: find the offset needed until the Tetromino offsets something */
+        let offset = 0
+        while (!this.tetrominoCollides(tetromino, x, y + offset)) {
+            offset += 1
+        }
+
+        /**
+         * There is no ghost pieces: return
+         */
+        if (offset <= 1) {
+            return false
+        }
+
+        offset -= 1
+
+        /* Then draw the tetromino pieces onto the sprite board, with opacity */
+        for (let tY = 0; tY < tetromino.getHeight(); tY++) {
+            for (let tX = 0; tX < tetromino.getWidth(); tX++) {
+                let value = tetromino.getRotationBox()[tY][tX]
+
+                if (value == 1) {
+                    let blockX = tX + x
+                    let blockY = tY + y + offset
+                    
+                    let spriteBlock = this.getSpriteBlock(blockX, blockY)
+                    if (spriteBlock != null) {
+                        spriteBlock.setColor(tetromino.color)
+                        spriteBlock.setActive(true)
+                        spriteBlock.setOpacity(0.5)
+                    }
+                }
+            }
+        }
+
+        return true
+    }
+
+    /**
+     * Check for line clears.
+     * Returns the number of lines cleared.
+     */
+    checkForClear() {
+        let cleared = 0
+        for (let y = 0; y < this.height; y++) {
+            let row = this.staticBoard[y]
+            let fullRow = true
+            for (let x = 0; x < this.width; x++) {
+                if (this.isStaticEmptyFromLocation(x, y)) {
+                    fullRow = false
+                }
+            }
+
+            if (fullRow) {
+                cleared += 1
+
+                /* Blank out the current row. */
+                for (let x = 0; x < this.width; x++) {
+                    this.staticBoard[y][x] = 0
+                }
+
+                /* Shift all the above rows down and add a blank row on top. */
+                this.staticBoard.splice(y, 1)
+                this.staticBoard.unshift(row)
+            }
+        }
+
+        if (cleared >= 4) {
+            Sounds.tetris.play()
+        } else if (cleared > 0) {
+            Sounds.clear.play()
+        }
+
+        return cleared
+    }
+
+    /**
      * Converts the static blocks into sprites.
      */
     update() {
@@ -220,6 +309,7 @@ class Board {
 
                 spriteBlock.setColor(staticBlock)
                 spriteBlock.setActive(!this.isStaticEmptyFromBlock(staticBlock))
+                spriteBlock.setOpacity(1)
             }
         }
     }

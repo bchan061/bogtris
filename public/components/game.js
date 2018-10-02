@@ -9,17 +9,14 @@ class Game {
         this.randomGenerator = new RandomGenerator(this.tetrominoes)
         this.elapsed = 0
 
-        this.getNextTetromino()
+        this.dropTimer = new Timer(0.25, this.perpetualDropTetromino.bind(this))
+        this.dropActive = true
+        this.inactiveTimer = new CountdownTimer(0.5, this.onInactivity.bind(this))
 
-        this.tetrominoes.lTetromino.logBox()
-        this.tetrominoes.lTetromino.rotateRight()
-        this.tetrominoes.lTetromino.logBox()
-        this.tetrominoes.lTetromino.rotateRight()
-        this.tetrominoes.lTetromino.logBox()
-        this.tetrominoes.lTetromino.rotateRight()
-        this.tetrominoes.lTetromino.logBox()
-        this.tetrominoes.lTetromino.rotateRight()
-        this.tetrominoes.lTetromino.logBox()
+        this.holdTetromino = null
+        this.blockHold = null
+
+        this.getNextTetromino()
     }
 
     /**
@@ -36,6 +33,19 @@ class Game {
     getNextTetromino() {
         this.currentTetromino = this.randomGenerator.popFromQueue()
         this.tetrominoLocation = this.tetrominoes.getSpawningLocation(this.currentTetromino, this.board)
+        this.inactiveTimer.reset()
+        this.inactiveTimer.deactivate()
+    }
+
+    /**
+     * Called on inactivity on the bottom of the board.
+     * Automatically places the tetromino down.
+     */
+    onInactivity() {
+        Sounds.forceDrop.play()
+        this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
+        this.droppedTetromino()
+        this.getNextTetromino()
     }
 
     /**
@@ -56,6 +66,10 @@ class Game {
         } else {
             this.tetrominoLocation.x += x
             this.tetrominoLocation.y += y
+
+            Sounds.move.play()
+            this.inactiveTimer.reset()
+
             return true
         }
     }
@@ -93,6 +107,8 @@ class Game {
             return false
         }
 
+        Sounds.rotate.play()
+        this.inactiveTimer.reset()
         return true
     }
 
@@ -100,7 +116,34 @@ class Game {
      * Soft drops the tetromino down.
      */
     softDropTetromino() {
+        if (
+            !this.board.tetrominoCollides(
+                this.currentTetromino,
+                this.tetrominoLocation.x,
+                this.tetrominoLocation.y + 1
+            )
+        ) {
+            this.tetrominoLocation.y += 1
+            Sounds.drop.play()
+        }
+    }
 
+    /**
+     * Drop the tetromino constantly.
+     */
+    perpetualDropTetromino() {
+        if (
+            this.board.tetrominoCollides(
+                this.currentTetromino,
+                this.tetrominoLocation.x,
+                this.tetrominoLocation.y + 1
+            )
+        ) {
+            this.inactiveTimer.activate()
+        } else {
+            this.tetrominoLocation.y += 1
+            Sounds.drop.play()
+        }
     }
 
     /**
@@ -116,18 +159,52 @@ class Game {
         ) {
             this.tetrominoLocation.y += 1
         }
+        Sounds.hardDrop.play()
 
         this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
+        this.droppedTetromino()
         this.getNextTetromino()
     }
 
     /**
-     * Attempts to hold the current piece.
+     * Called when dropping a tetromino.
+     * Allows a piece to be held again, if not already.
+     */
+    droppedTetromino() {
+        this.blockHold = false
+    }
+
+    /**
+     * Attempts to hold the current piece
+     * Also brings out the previous held piece, if it exists.
      * Returns whether it is allowed or not.
      */
     hold() {
-        // TODO: implement hold
-        this.getNextTetromino()
+        if (!this.blockHold) {
+            let previouslyHeldTetromino = this.holdTetromino
+
+            this.holdTetromino = this.currentTetromino
+
+            if (previouslyHeldTetromino != null) {
+                this.currentTetromino = previouslyHeldTetromino
+                this.currentTetromino.reset()
+                this.tetrominoLocation = this.tetrominoes.getSpawningLocation(
+                    this.currentTetromino,
+                    this.board
+                )
+            } else {
+                this.getNextTetromino()
+            }
+
+            this.blockHold = true
+            this.inactiveTimer.deactivate()
+            this.inactiveTimer.reset()
+            Sounds.hold.play()
+
+            return true
+        } else {
+            return false
+        }
     }
 
     /**
@@ -135,37 +212,20 @@ class Game {
      * @param {number} delta the delta percentage
      */
     update(delta, elapsed) {
-        this.elapsed += elapsed / 1000;
+        this.elapsed += elapsed
 
-        if (this.elapsed >= 0.25) {
-            this.elapsed -= 0.25
-
-            if (
-                this.board.tetrominoCollides(
-                    this.currentTetromino,
-                    this.tetrominoLocation.x,
-                    this.tetrominoLocation.y + 1
-                )
-            ) {
-                this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
-                this.getNextTetromino()
-            } else {
-                this.tetrominoLocation.y += 1
-            }
+        if (this.dropActive) {
+            this.dropTimer.update(elapsed)
         }
+
+        this.inactiveTimer.update(elapsed)
 
         this.input.update(delta, elapsed)
 
         this.board.update()
+        this.board.drawGhostPieces(this.currentTetromino, this.tetrominoLocation)
         this.board.renderTetromino(this.currentTetromino, this.tetrominoLocation)
 
-        this.render()
-    }
-
-    /**
-     * Renders.
-     */
-    render() {
-
+        this.board.checkForClear()
     }
 }

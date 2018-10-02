@@ -1,4 +1,13 @@
+/**
+ * A tetromino.
+ */
 class Tetromino {
+    /**
+     * Initializes a tetromino.
+     * @param {string} name the name of the tetromino
+     * @param {number} color the color of the tetromino
+     * @param {array} originalShape the shape of the tetromino when spawned
+     */
     constructor(name, color, originalShape) {
         this.name = name
         this.color = color
@@ -9,26 +18,44 @@ class Tetromino {
         this.generateRotationBoxes()
     }
 
+    /**
+     * Returns the height of the tetromino's current rotation.
+     */
     getHeight() {
         return this.getRotationBox().length
     }
 
+    /**
+     * Returns the width of the tetromino's current rotation.
+     */
     getWidth() {
         return this.getRotationBox()[0].length
     }
 
+    /**
+     * Resets the tetromino back to its initial position.
+     */
     reset() {
         this.currentShapeIndex = 0
     }
 
+    /**
+     * Rotates the tetromino clockwise.
+     */
     rotateRight() {
         this.currentShapeIndex = (this.currentShapeIndex + 1) % this.rotationBoxes.length
     }
     
+    /**
+     * Rotates the tetromino counter-clockwise.
+     */
     rotateLeft() {
         this.currentShapeIndex = ((this.currentShapeIndex - 1) + this.rotationBoxes.length) % this.rotationBoxes.length
     }
 
+    /**
+     * Generates the tetromino's rotation boxes.
+     */
     generateRotationBoxes() {
         /* First shape: the original shape */
         this.rotationBoxes.push(this.shape)
@@ -66,10 +93,16 @@ class Tetromino {
         this.rotationBoxes.push(newShape3)
     }
 
+    /**
+     * Returns the tetromino's current rotation box.
+     */
     getRotationBox() {
         return this.rotationBoxes[this.currentShapeIndex]
     }
 
+    /**
+     * Logs the current rotation box.
+     */
     logBox() {
         console.log(this.name + " Tetromino: ")
         let currentBox = this.getRotationBox()
@@ -80,5 +113,13 @@ class Tetromino {
             }
             console.log(row)
         }
+    }
+
+    /**
+     * Tries to rotate the tetromino in the current board and location.
+     * May modify the location as part SRS.
+     */
+    tryRotate(board, location) {
+        
     }
 }

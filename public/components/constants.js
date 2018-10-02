@@ -27,3 +27,19 @@ class Colors {
         return 0xFF0000
     }
 }
+
+class Timings {
+    /**
+     * Delayed auto-shift (DAS): delay when holding a key down before moving the tetromino fast.
+     */
+    static get DAS() {
+        return 0.2
+    }
+
+    /**
+     * Auto-repeat rate (ARR): time it takes to fast move a tetromino after DAS.
+     */
+    static get ARR() {
+        return 0.033
+    }
+}

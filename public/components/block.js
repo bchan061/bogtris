@@ -26,6 +26,14 @@ class Block {
     }
 
     /**
+     * Sets the opacity of the block
+     * @param {number} opacity the opacity of the sprite (0 => invisible, 1 => visible)
+     */
+    setOpacity(opacity) {
+        this.sprite.alpha = opacity
+    }
+
+    /**
      * Used for pools.
      */
     reset() {

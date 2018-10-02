@@ -3,8 +3,11 @@ const app = new PIXI.Application({
     height: 480
 })
 
+Sounds.init()
+
 PIXI.loader
     .add("assets/block.svg")
+    .add("assets/grid.svg")
 .load(init)
 
 function init() {
@@ -19,6 +22,6 @@ function init() {
     window.onkeyup = (keycode) => input.onKeyUp(keycode.which)
 
     app.ticker.add(
-        (dt) => game.update(dt, app.ticker.elapsedMS)
+        (dt) => game.update(dt, app.ticker.elapsedMS / 1000)
     )
 }
