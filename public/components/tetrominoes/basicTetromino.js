@@ -1,5 +1,5 @@
 /**
- * Every tetromino besides the I and O tetromino is a basic tetromino.
+ * Every tetromino besides the O tetromino is a basic tetromino.
  * That is, according to SRS, they employ the same offsets.
  */
 class BasicTetromino extends Tetromino {
@@ -51,7 +51,6 @@ class BasicTetromino extends Tetromino {
             } else {
                 this.rotateLeft()
             }
-            console.log("Testing kick (" + kick[0] + ", " + kick[1] + ") for tetromino " + this.name)
             if (
                 !board.tetrominoCollides(
                     this,
@@ -59,14 +58,8 @@ class BasicTetromino extends Tetromino {
                     location.y + kick[1]
                 )
             ) {
-                /* Kick succeeds */
-
-                console.log("Kick (" + kick[0] + ", " + kick[1] + ") for tetromino " + this.name + " succeeded")
-
                 location.x += kick[0]
                 location.y += kick[1]
-
-                Sounds.rotate.play()
 
                 return true
             } else {

@@ -1,3 +1,6 @@
+/**
+ * Includes both the random generator and the next queue.
+ */
 class RandomGenerator {
     /**
      * Initializes a random generator, with a new bag and queue.
@@ -18,7 +21,67 @@ class RandomGenerator {
             tetrominoes.oTetromino,
         ]
 
+        this.nextOffset = new PIXI.Point(250, 50)
+        this.nextContainer = new PIXI.Container()
+        this.nextContainers = []
+        for (let i = 0; i < Rules.NEXT_PIECES; i++) {
+            this.nextContainers[i] = new PIXI.Container()
+            this.nextContainers[i].position.set(
+                (10 * GraphicsConstants.BLOCK_SIZE) + 4 * GraphicsConstants.BLOCK_SIZE,
+                8 * GraphicsConstants.BLOCK_SIZE + (i * 3 * GraphicsConstants.BLOCK_SIZE)
+            )
+            this.nextContainer.addChild(this.nextContainers[i])
+        }
+
         this.fillQueueWithBag()
+        this.fillNextSprites()
+    }
+
+    /**
+     * Fills all of the next queue with the sprites of the tetromino.
+     */
+    fillNextSprites() {
+        for (let i = 0; i < this.nextContainers.length; i++) {
+            let container = this.nextContainers[i]
+            let tetromino = this.queue[i]
+
+            let sprite = tetromino.getSprite()
+            if (sprite != null) {
+                container.addChild(sprite)
+            }
+        }
+    }
+
+    /**
+     * Shifts all of the containers up.
+     */
+    shiftNextSprites() {
+        /* Remove the tetromino's sprite. */
+        let removedContainer = this.nextContainers[0]
+        let removedTetromino = this.queue[0]
+        if (removedContainer.children.length == 1) {
+            let removedSprite = removedContainer.children[0]
+            removedTetromino.releaseSprite(removedSprite)
+            removedContainer.removeChildren()
+        }
+
+        /* Remove the top container and push it to the bottom. */
+        removedContainer.y = 8 * GraphicsConstants.BLOCK_SIZE +
+            ((Rules.NEXT_PIECES - 1) * 3 * GraphicsConstants.BLOCK_SIZE)
+        this.nextContainers.shift()
+        this.nextContainers.push(removedContainer)
+
+        /* Shift all containers down. */
+        for (let i = 0; i < this.nextContainers.length - 1; i++) {
+            let container = this.nextContainers[i]
+            container.position.y -= 3 * GraphicsConstants.BLOCK_SIZE
+        }
+
+        let newTetromino = this.queue[Rules.NEXT_PIECES]
+        let newSprite = newTetromino.getSprite()
+        if (newSprite != null) {
+            removedContainer.addChild(newSprite)
+        }
     }
 
     /**
@@ -71,6 +134,8 @@ class RandomGenerator {
      * Pops a tetromino from the queue.
      */
     popFromQueue() {
+        this.shiftNextSprites()
+
         let tetromino = this.queue.shift()
         tetromino.reset()
 

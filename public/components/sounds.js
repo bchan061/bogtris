@@ -28,5 +28,11 @@ class Sounds {
         Sounds.tetris = new Howl({
             src: ['assets/sound/tetris.wav']
         })
+        Sounds.spin = new Howl({
+            src: ['assets/sound/spin.wav']
+        })
+        Sounds.clearSpin = new Howl({
+            src: ['assets/sound/clearSpin.wav']
+        })
     }
 }

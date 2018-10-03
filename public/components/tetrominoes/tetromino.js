@@ -14,8 +14,65 @@ class Tetromino {
         this.shape = originalShape
         this.rotationBoxes = []
         this.currentShapeIndex = 0
+        this.sprites = [new PIXI.Container(), new PIXI.Container(), new PIXI.Container()]
+        this.usedSprites = [false, false, false]
 
         this.generateRotationBoxes()
+
+        this.createSprites()
+    }
+
+    /**
+     * Gets a sprite container from the pool of sprites, if available.
+     */
+    getSprite() {
+        for (let i = 0; i < this.usedSprites.length; i++) {
+            let isPossible = this.usedSprites[i]
+            if (!isPossible) {
+                this.usedSprites[i] = true
+                return this.sprites[i]
+            }
+        }
+
+        console.log("Warning: no free sprites for tetromino " + this.name)
+
+        return null
+    }
+
+    /**
+     * Adds a sprite container back into the pool.
+     */
+    releaseSprite(container) {
+        for (let i = 0; i < this.sprites.length; i++) {
+            let sprite = this.sprites[i]
+            if (sprite == container) {
+                this.usedSprites[i] = false
+                return
+            }
+        }
+        console.log("Warning: can't find container to release! (" + this.name +")")
+    }
+
+    /**
+     * Creates a sprite (really a container of blocks) for the tetromino.
+     * Applies this to all three containers.
+     */
+    createSprites() {
+        for (let y = 0; y < this.shape.length; y++) {
+            for (let x = 0; x < this.shape[0].length; x++) {
+                let block = this.shape[y][x]
+
+                if (block == 1) {
+                    for (let i = 0; i < this.sprites.length; i++) {
+                        let sprite = new PIXI.Sprite(PIXI.loader.resources["assets/block.svg"].texture)
+                        sprite.position.set(x * GraphicsConstants.BLOCK_SIZE, y * GraphicsConstants.BLOCK_SIZE)
+                        sprite.scale.set(GraphicsConstants.BLOCK_SIZE / sprite.texture.width)
+                        sprite.tint = this.color
+                        this.sprites[i].addChild(sprite)
+                    }
+                }
+            }
+        }
     }
 
     /**

@@ -7,12 +7,21 @@ class Game {
         this.board = new Board(this)
         this.tetrominoes = new Tetrominoes()
         this.randomGenerator = new RandomGenerator(this.tetrominoes)
+        this.application.stage.addChild(this.randomGenerator.nextContainer)
         this.elapsed = 0
 
         this.dropTimer = new Timer(0.25, this.perpetualDropTetromino.bind(this))
         this.dropActive = true
         this.inactiveTimer = new CountdownTimer(0.5, this.onInactivity.bind(this))
+        this.spinClear = false
+        this.rotations = 0
 
+        this.holdContainer = new PIXI.Container()
+        this.holdContainer.position.set(
+            2 * GraphicsConstants.BLOCK_SIZE,
+            2 * GraphicsConstants.BLOCK_SIZE
+        )
+        this.application.stage.addChild(this.holdContainer)
         this.holdTetromino = null
         this.blockHold = null
 
@@ -35,6 +44,7 @@ class Game {
         this.tetrominoLocation = this.tetrominoes.getSpawningLocation(this.currentTetromino, this.board)
         this.inactiveTimer.reset()
         this.inactiveTimer.deactivate()
+        this.rotations = 0
     }
 
     /**
@@ -66,9 +76,10 @@ class Game {
         } else {
             this.tetrominoLocation.x += x
             this.tetrominoLocation.y += y
+            this.inactiveTimer.deactivate()
+            this.spinClear = false
 
             Sounds.move.play()
-            this.inactiveTimer.reset()
 
             return true
         }
@@ -81,6 +92,19 @@ class Game {
      */
     tryRotate(clockwise) {
         if (this.currentTetromino.tryRotate(this.board, this.tetrominoLocation, clockwise)) {
+            this.inactiveTimer.reset()
+            if (this.currentTetromino == this.tetrominoes.tTetromino) {
+                if (this.currentTetromino.checkTSpin(this.board, this.tetrominoLocation) >= 1) {
+                    Sounds.spin.play()
+                    this.spinClear = true
+                } else {
+                    Sounds.rotate.play()
+                }
+            } else {
+                Sounds.rotate.play()
+            }
+
+            this.rotations += 1
             this.inactiveTimer.reset()
         }
     }
@@ -98,6 +122,12 @@ class Game {
         ) {
             this.tetrominoLocation.y += 1
             Sounds.drop.play()
+            this.spinClear = false
+        } else {
+            this.inactiveTimer.activate()
+            if (this.rotations >= Rules.MAX_ROTATIONS) {
+                this.onInactivity()
+            }
         }
     }
 
@@ -113,8 +143,12 @@ class Game {
             )
         ) {
             this.inactiveTimer.activate()
+            if (this.rotations >= Rules.MAX_ROTATIONS) {
+                this.onInactivity()
+            }
         } else {
             this.tetrominoLocation.y += 1
+            this.spinClear = false
             Sounds.drop.play()
         }
     }
@@ -131,6 +165,7 @@ class Game {
             )
         ) {
             this.tetrominoLocation.y += 1
+            this.spinClear = false
         }
         Sounds.hardDrop.play()
 
@@ -145,6 +180,8 @@ class Game {
      */
     droppedTetromino() {
         this.blockHold = false
+
+        this.checkClear()
     }
 
     /**
@@ -156,7 +193,17 @@ class Game {
         if (!this.blockHold) {
             let previouslyHeldTetromino = this.holdTetromino
 
+            if (this.holdContainer.children.length == 1) {
+                previouslyHeldTetromino.releaseSprite(this.holdContainer.children[0])
+
+                this.holdContainer.removeChildren()
+            }
+
             this.holdTetromino = this.currentTetromino
+            let sprite = this.holdTetromino.getSprite()
+            if (sprite != null) {
+                this.holdContainer.addChild(sprite)
+            }
 
             if (previouslyHeldTetromino != null) {
                 this.currentTetromino = previouslyHeldTetromino
@@ -170,6 +217,7 @@ class Game {
             }
 
             this.blockHold = true
+            this.spinClear = false
             this.inactiveTimer.deactivate()
             this.inactiveTimer.reset()
             Sounds.hold.play()
@@ -177,6 +225,23 @@ class Game {
             return true
         } else {
             return false
+        }
+    }
+
+    /**
+     * Checks if there is a full row in the board.
+     * Plays sounds and deals garbage as a result.
+     */
+    checkClear() {
+        let cleared = this.board.checkForClear()
+        if (cleared > 0) {
+            if (this.spinClear) {
+                Sounds.clearSpin.play()
+            } else if (cleared >= 4) {
+                Sounds.tetris.play()
+            } else {
+                Sounds.clear.play()
+            }
         }
     }
 
@@ -198,7 +263,5 @@ class Game {
         this.board.update()
         this.board.drawGhostPieces(this.currentTetromino, this.tetrominoLocation)
         this.board.renderTetromino(this.currentTetromino, this.tetrominoLocation)
-
-        this.board.checkForClear()
     }
 }

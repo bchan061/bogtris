@@ -9,14 +9,10 @@ class Board {
      * @param {number} height the height of the board
      */
     constructor(game, width = 10, height = 25) {
-        /* Obstruct the top 5 rows, so that only (typically) 20 rows are visible. */
-        const OBSTRUCT_TOP = 5
-        const BLOCK_SIZE = 18
-
         this.width = width
         this.height = height
-        this.blockSize = BLOCK_SIZE
-        this.obstructTop = OBSTRUCT_TOP
+        this.blockSize = GraphicsConstants.BLOCK_SIZE
+        this.obstructTop = GraphicsConstants.OBSTRUCT_TOP
         this.game = game
         this.spriteBoard = new Array(this.height)
         this.staticBoard = new Array(this.height)
@@ -287,12 +283,6 @@ class Board {
                 this.staticBoard.splice(y, 1)
                 this.staticBoard.unshift(row)
             }
-        }
-
-        if (cleared >= 4) {
-            Sounds.tetris.play()
-        } else if (cleared > 0) {
-            Sounds.clear.play()
         }
 
         return cleared

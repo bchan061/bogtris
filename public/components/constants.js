@@ -28,6 +28,52 @@ class Colors {
     }
 }
 
+class GraphicsConstants {
+    /**
+     * Returns the default width of the screen.
+     */
+    static get SCREEN_WIDTH() {
+        return 480
+    }
+
+    /**
+     * Returns the default height of the screen.
+     */
+    static get SCREEN_HEIGHT() {
+        return 480
+    }
+
+    /**
+     * Returns the block size, in pixels.
+     */
+    static get BLOCK_SIZE() {
+        return 18
+    }
+
+    /**
+     * Returns how much rows on the top are obstructed.
+     */
+    static get OBSTRUCT_TOP() {
+        return 5
+    }
+}
+
+class Rules {
+    /**
+     * The max rotations acceptable before the piece is automatically placed down without any leeway.
+     */
+    static get MAX_ROTATIONS() {
+        return 20
+    }
+
+    /**
+     * Returns the number of pieces visible in the next queue.
+     */
+    static get NEXT_PIECES() {
+        return 5
+    }
+}
+
 class Timings {
     /**
      * Delayed auto-shift (DAS): delay when holding a key down before moving the tetromino fast.

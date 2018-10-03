@@ -10,25 +10,8 @@ class Tetrominoes {
      * Creates the tetrominoes.
      */
     createTetrominoes() {
-        this.iTetromino = new Tetromino(
-            "I",
-            Colors.CYAN,
-            [
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ]
-        )
-        this.tTetromino = new BasicTetromino(
-            "T",
-            Colors.PURPLE,
-            [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 0, 0]
-            ]
-        )
+        this.iTetromino = new ITetromino()
+        this.tTetromino = new TTetromino()
         this.jTetromino = new BasicTetromino(
             "J",
             Colors.BLUE,
@@ -39,7 +22,7 @@ class Tetrominoes {
             ]
         )
         this.lTetromino = new BasicTetromino(
-            "l",
+            "L",
             Colors.ORANGE,
             [
                 [0, 0, 1],
