@@ -86,6 +86,13 @@ class Rules {
     static get INACTIVE_TIMER() {
         return 1
     }
+
+    /**
+     * The amount of pieces that can be dropped before the back-to-back bonus gets removed.
+     */
+    static get BACK_TO_BACK() {
+        return 10
+    }
 }
 
 class Timings {

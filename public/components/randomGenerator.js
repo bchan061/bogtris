@@ -23,6 +23,18 @@ class RandomGenerator {
 
         this.nextOffset = new PIXI.Point(250, 50)
         this.nextContainer = new PIXI.Container()
+        this.nextText = new PIXI.extras.BitmapText(
+            "Next",
+            {
+                font: '24px Exo2Medium',
+                fill: 'white',
+            }
+        )
+        this.nextText.position.set(
+            (10 * GraphicsConstants.BLOCK_SIZE) + 4 * GraphicsConstants.BLOCK_SIZE,
+            4 * GraphicsConstants.BLOCK_SIZE
+        )
+        this.nextContainer.addChild(this.nextText)
         this.nextContainers = []
         for (let i = 0; i < Rules.NEXT_PIECES; i++) {
             this.nextContainers[i] = new PIXI.Container()

@@ -8,6 +8,7 @@ Sounds.init()
 PIXI.loader
     .add("assets/block.svg")
     .add("assets/grid.svg")
+    .add("assets/fonts/font.fnt")
 .load(init)
 
 function preventDefault(event, nextFunction) {
@@ -30,7 +31,13 @@ function init() {
     window.onkeydown = (keycode) => input.onKeyDown(keycode.which)
     window.onkeyup = (keycode) => input.onKeyUp(keycode.which)
 
-    assignVirtualKeyBindings(input)
+    /* Test for mobile and add bindings if necessary. */
+    if (/Mobi/.test(navigator.userAgent)) {
+        assignVirtualKeyBindings(input)
+    } else {
+        let gamepad = document.getElementById("gamepad")
+        gamepad.style = "display: none;"
+    }
 
     app.ticker.add(
         (dt) => game.update(dt, app.ticker.elapsedMS / 1000)

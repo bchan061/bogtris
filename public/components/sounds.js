@@ -34,5 +34,8 @@ class Sounds {
         Sounds.clearSpin = new Howl({
             src: ['assets/sound/clearSpin.wav']
         })
+        Sounds.backToBack = new Howl({
+            src: ['assets/sound/back2Back.wav']
+        })
     }
 }

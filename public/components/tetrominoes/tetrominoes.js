@@ -64,12 +64,17 @@ class Tetrominoes {
      * @param {object} board the board
      */
     getSpawningLocation(tetromino, board) {
-        let top = board.obstructTop
+        let top = board.obstructTop - 1
         let x = board.width / 2 - Math.ceil(tetromino.getWidth() / 2)
 
-        return {
-            x: x,
-            y: top
+        /* Test the top of the board. If it is occupied, the player has topped out; return null. */
+        if (board.tetrominoCollides(tetromino, x, top)) {
+            return null
+        } else {
+            return {
+                x: x,
+                y: top
+            }
         }
     }
 }
