@@ -5,7 +5,7 @@ class Sounds {
         })
         Sounds.drop = new Howl({
             src: ['assets/sound/drop.wav'],
-            volume: 0.75
+            volume: 0.5
         })
         Sounds.softDrop = new Howl({
             src: ['assets/sound/softDrop.wav']
@@ -35,7 +35,7 @@ class Sounds {
             src: ['assets/sound/clearSpin.wav']
         })
         Sounds.backToBack = new Howl({
-            src: ['assets/sound/back2Back.wav']
+            src: ['assets/sound/back2back.wav']
         })
         Sounds.perfectClear = new Howl({
             src: ['assets/sound/perfectClear.wav']
