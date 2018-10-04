@@ -399,7 +399,7 @@ class Game {
             } else {
                 Sounds.clear.play()
                 if (cleared > 0) {
-                    this.updateStatus(Utilities.numberToCount(cleared), true)
+                    this.updateStatus(Utilities.numberToCount(cleared), false)
                 }
                 this.back2Back -= 1
             }
