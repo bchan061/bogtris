@@ -67,10 +67,24 @@ class Rules {
     }
 
     /**
-     * Returns the number of pieces visible in the next queue.
+     * The number of pieces visible in the next queue.
      */
     static get NEXT_PIECES() {
         return 5
+    }
+
+    /**
+     * The time it takes to drop a tetromino without any action.
+     */
+    static get DROP_TIMER() {
+        return 1
+    }
+
+    /**
+     * The time it takes for the player to input any final action when the piece touches the board.
+     */
+    static get INACTIVE_TIMER() {
+        return 1
     }
 }
 

@@ -30,6 +30,15 @@ class RandomGenerator {
                 (10 * GraphicsConstants.BLOCK_SIZE) + 4 * GraphicsConstants.BLOCK_SIZE,
                 8 * GraphicsConstants.BLOCK_SIZE + (i * 3 * GraphicsConstants.BLOCK_SIZE)
             )
+
+            if (i == 0) {
+                this.nextContainers[i].position.y -= 2 * GraphicsConstants.BLOCK_SIZE
+                this.nextContainers[i].alpha = 1
+            } else {
+                /* Fade the other next pieces a little bit */
+                this.nextContainers[i].alpha = 0.4
+            }
+
             this.nextContainer.addChild(this.nextContainers[i])
         }
 
@@ -68,6 +77,7 @@ class RandomGenerator {
         /* Remove the top container and push it to the bottom. */
         removedContainer.y = 8 * GraphicsConstants.BLOCK_SIZE +
             ((Rules.NEXT_PIECES - 1) * 3 * GraphicsConstants.BLOCK_SIZE)
+        removedContainer.alpha = 0.4
         this.nextContainers.shift()
         this.nextContainers.push(removedContainer)
 
@@ -75,6 +85,14 @@ class RandomGenerator {
         for (let i = 0; i < this.nextContainers.length - 1; i++) {
             let container = this.nextContainers[i]
             container.position.y -= 3 * GraphicsConstants.BLOCK_SIZE
+
+            if (i == 0) {
+                this.nextContainers[i].position.y -= 2 * GraphicsConstants.BLOCK_SIZE
+                this.nextContainers[i].alpha = 1
+            } else {
+                /* Fade the other next pieces */
+                this.nextContainers[i].alpha = 0.4
+            }
         }
 
         let newTetromino = this.queue[Rules.NEXT_PIECES]

@@ -4,7 +4,7 @@
         <title> Bogtris </title>
 
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
         <link rel="stylesheet" href="index.css">
     </head>
@@ -34,8 +34,24 @@
         <script type="text/javascript" src="components/game.js"> </script>
         <script type="text/javascript" src="main.js"> </script>
 
-        <div id="gameDiv">
+        <div id="game">
+            <div id="gameDiv">
 
+            </div>
+
+            <div id="gamepad">
+                <div id="topGamepad">
+                    <img src="htmlAssets/drop.svg" class="virtualKey" id="drop">
+                    <img src="htmlAssets/hardDrop.svg" class="virtualKey" id="hardDrop">
+                    <img src="htmlAssets/hold.svg" class="virtualKey" id="hold">
+                </div>
+                <div id="bottomGamepad">
+                    <img src="htmlAssets/leftArrow.svg" class="virtualKey" id="leftArrow">
+                    <img src="htmlAssets/rightArrow.svg" class="virtualKey" id="rightArrow">
+                    <img src="htmlAssets/rotateLeft.svg" class="virtualKey" id="leftRotate">
+                    <img src="htmlAssets/rotateRight.svg" class="virtualKey" id="rightRotate">
+                </div>
+            </div>
         </div>
     </body>
 </html>

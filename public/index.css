@@ -1,7 +1,39 @@
+html {
+    overflow: hidden;
+}
+
 #gameDiv {
     text-align: center;
 }
 
 canvas {
     height: 90vmin;
+}
+
+#gamepad {
+    text-align: center;
+    margin-top: -10em;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.virtualKey {
+    width: 5em;
+    height: 5em;
+    opacity: 0.6;
+}
+
+.topGamepad {
+    height: 50%;
+}
+
+.bottomGamepad {
+    height: 50%;
+}
+
+body {
+    background-color: lightgray;
 }

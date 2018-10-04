@@ -10,9 +10,9 @@ class Game {
         this.application.stage.addChild(this.randomGenerator.nextContainer)
         this.elapsed = 0
 
-        this.dropTimer = new Timer(0.25, this.perpetualDropTetromino.bind(this))
+        this.dropTimer = new Timer(Rules.DROP_TIMER, this.perpetualDropTetromino.bind(this))
         this.dropActive = true
-        this.inactiveTimer = new CountdownTimer(0.5, this.onInactivity.bind(this))
+        this.inactiveTimer = new CountdownTimer(Rules.INACTIVE_TIMER, this.onInactivity.bind(this))
         this.spinClear = false
         this.rotations = 0
 

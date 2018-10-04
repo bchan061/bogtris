@@ -69,6 +69,22 @@ class Input {
     }
 
     /**
+     * Simulates a key press for the key.
+     * @param {string} name the key name
+     */
+    simulateKeyDown(name) {
+        this.keys[name].keyDown()
+    }
+
+    /**
+     * Simulates a key up event for the key.
+     * @param {string} name the key name
+     */
+    simulateKeyUp(name) {
+        this.keys[name].keyUp()
+    }
+
+    /**
      * Handles ARR movement.
      */
     arr() {
