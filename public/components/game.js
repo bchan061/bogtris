@@ -403,6 +403,12 @@ class Game {
                 }
                 this.back2Back -= 1
             }
+
+            if (this.board.checkForPerfectClear()) {
+                Sounds.perfectClear.play()
+                this.updateStatus("Perfect Clear " + Utilities.numberToCount(cleared), false)
+                this.score += Scoring.PERFECT_CLEAR
+            }
         } else {
             this.back2Back -= 1
             this.combo = 0

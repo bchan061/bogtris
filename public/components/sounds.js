@@ -37,5 +37,8 @@ class Sounds {
         Sounds.backToBack = new Howl({
             src: ['assets/sound/back2Back.wav']
         })
+        Sounds.perfectClear = new Howl({
+            src: ['assets/sound/perfectClear.wav']
+        })
     }
 }

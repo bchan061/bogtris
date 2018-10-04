@@ -289,6 +289,21 @@ class Board {
     }
 
     /**
+     * Returns if the board is empty.
+     */
+    checkForPerfectClear() {
+        /* Check from the bottom up to hopefully reduce the runtime */
+        for (let y = this.height - 1; y >= 0; y--) {
+            for (let x = 0; x < this.width; x++) {
+                if (!this.isStaticEmptyFromBlock(this.staticBoard[y][x])) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    /**
      * Converts the static blocks into sprites.
      */
     update() {
