@@ -18,4 +18,13 @@ class Utilities {
                 return ""
         }
     }
+
+    /**
+     * Returns a value relative to the smallest screen dimension.
+     * Useful for fonts.
+     * @param {*} value 
+     */
+    static getRelativeToSmallestScreenDimension(value) {
+        return value * Math.min(GraphicsConstants.SCREEN_WIDTH, GraphicsConstants.SCREEN_HEIGHT)
+    }
 }

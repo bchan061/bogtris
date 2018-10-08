@@ -51,8 +51,8 @@ class Block {
         this.y = y
 
         this.sprite.position.set(
-            x * this.board.blockSize + this.board.offset.x,
-            y * this.board.blockSize + this.board.offset.y
+            x * this.board.blockSize,
+            y * this.board.blockSize
         )
     }
 

@@ -4,23 +4,23 @@
 class Board {
     /**
      * Initializes the board.
-     * @param {object} game a reference to the game
+     * @param {object} playfield a reference to the playfield
      * @param {number} width the width of the board
      * @param {number} height the height of the board
      */
-    constructor(game, width = 10, height = 25) {
+    constructor(playfield, width = 10, height = 25) {
         this.width = width
         this.height = height
+        this.playfield = playfield
         this.blockSize = GraphicsConstants.BLOCK_SIZE
         this.obstructTop = GraphicsConstants.OBSTRUCT_TOP
-        this.game = game
+        this.stage = new PIXI.Container()
         this.spriteBoard = new Array(this.height)
         this.staticBoard = new Array(this.height)
-        this.offset = new PIXI.Point(18, 18)
         this.blockTexture = PIXI.loader.resources["assets/block.svg"].texture
         this.grid = new PIXI.Sprite(PIXI.loader.resources["assets/grid.svg"].texture)
         this.grid.alpha = 0.5
-        this.grid.position.set(this.offset.x, this.offset.y + (this.obstructTop * this.blockSize))
+        this.grid.position.set(0, (this.obstructTop * this.blockSize))
         this.grid.scale.set((this.width * this.blockSize) / this.grid.texture.width)
 
         this.initBoard()
@@ -30,7 +30,7 @@ class Board {
      * Creates the arrays for the active and static block values.
      */
     initBoard() {
-        this.game.application.stage.addChild(this.grid)
+        this.stage.addChild(this.grid)
 
         for (let y = 0; y < this.height; y++) {
             let spriteRow = new Array(this.width)
@@ -39,7 +39,7 @@ class Board {
                 let block = new Block(this)
                 block.set(x, y)
 
-                this.game.application.stage.addChild(block.sprite)
+                this.stage.addChild(block.sprite)
 
                 spriteRow[x] = block
                 staticRow[x] = 0
@@ -74,6 +74,25 @@ class Board {
         }
 
         return this.staticBoard[y][x]
+    }
+
+    /**
+     * Returns the spawning location for the tetromino, if it exists
+     * @param {object} tetromino the tetromino to spawn
+     */
+    getSpawningLocation(tetromino) {
+        let width = tetromino.getWidth()
+        let x = Math.floor(this.width / 2 - width / 2)
+        let top = this.obstructTop - 1
+
+        if (this.tetrominoCollides(tetromino, x, top)) {
+            return null
+        } else {
+            return {
+                x: x,
+                y: top
+            }
+        }
     }
 
     /**
@@ -301,6 +320,32 @@ class Board {
             }
         }
         return true
+    }
+
+    /**
+     * Creates garbage at random columns.
+     * @param {number} column the column to create the garbage in
+     */
+    createGarbage(amount) {
+        let column = Math.floor(Math.random() * this.width)
+        for (let i = 0; i < amount; i++) {
+            if (Math.random() > Rules.GARBAGE_IN_SAME_COLUMN) {
+                column = Math.floor(Math.random() * this.width)
+            }
+
+            let row = []
+            for (let x = 0; x < this.width; x++) {
+                if (x == column) {
+                    row[x] = 0
+                } else {
+                    row[x] = Colors.GRAY
+                }
+            }
+
+            /* Push the row to the back and shift the top row away */
+            this.staticBoard.push(row)
+            this.staticBoard.shift()
+        }
     }
 
     /**

@@ -1,6 +1,27 @@
+let windowWidth = window.innerWidth
+let windowHeight = window.innerHeight
+
+let width = GraphicsConstants.DEFAULT_SCREEN_WIDTH
+let height = GraphicsConstants.DEFAULT_SCREEN_HEIGHT
+
+if (windowWidth > windowHeight) {
+    let scale = window.innerHeight / GraphicsConstants.DEFAULT_SCREEN_HEIGHT
+    width = GraphicsConstants.DEFAULT_SCREEN_WIDTH * scale
+    height = window.innerHeight
+} else {
+    let scale = window.innerWidth / GraphicsConstants.DEFAULT_SCREEN_WIDTH
+    width = window.innerWidth
+    height = GraphicsConstants.DEFAULT_SCREEN_HEIGHT * scale
+}
+
+GraphicsConstants.SCREEN_WIDTH = width
+GraphicsConstants.SCREEN_HEIGHT = height
+
+GraphicsConstants.updateBlockSize()
+
 const app = new PIXI.Application({
-    width: 480,
-    height: 480
+    width: width,
+    height: height
 })
 
 Sounds.init()
@@ -24,12 +45,9 @@ function init() {
     document.getElementById("gameDiv").appendChild(app.view)
 
     let game = new Game(app)
-    let input = new Input(game)
 
-    game.setInput(input)
-
-    window.onkeydown = (keycode) => input.onKeyDown(keycode.which)
-    window.onkeyup = (keycode) => input.onKeyUp(keycode.which)
+    window.onkeydown = (keycode) => game.inputDelegator.onKeyDown(keycode.which)
+    window.onkeyup = (keycode) => game.inputDelegator.onKeyUp(keycode.which)
 
     /* Test for mobile and add bindings if necessary. */
     if (/Mobi/.test(navigator.userAgent)) {
@@ -68,7 +86,7 @@ function assignVirtualKeyBindings(input) {
     assignVirtualKey(hardDrop, input, "Hard drop")
     assignVirtualKey(hold, input, "Hold")
 
-    let gamepad = document.getElementById("gamepad")
+    let virtualGamepad = document.getElementById("gamepad")
 
-    gamepad.oncontextmenu = (event) => preventDefault(event)
+    virtualGamepad.oncontextmenu = (event) => preventDefault(event)
 }

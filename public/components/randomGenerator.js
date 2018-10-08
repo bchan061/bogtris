@@ -26,7 +26,7 @@ class RandomGenerator {
         this.nextText = new PIXI.extras.BitmapText(
             "Next",
             {
-                font: '24px Exo2Medium',
+                font: Utilities.getRelativeToSmallestScreenDimension(0.05) + 'px Exo2Medium',
                 fill: 'white',
             }
         )

@@ -1,4 +1,12 @@
 class TTetromino extends BasicTetromino {
+    static get MINI_T_SPIN() {
+        return 1
+    }
+
+    static get T_SPIN() {
+        return 2
+    }
+
     constructor() {
         super(
             "T",
@@ -31,9 +39,9 @@ class TTetromino extends BasicTetromino {
             required[0] = (required[0] + rotationState) % this.rotationBoxes.length
             required[1] = (required[1] + rotationState) % this.rotationBoxes.length
             if (corners[required[0]] == 1 && corners[required[1]] == 1) {
-                return 2
+                return TTetromino.T_SPIN
             } else {
-                return 1
+                return TTetromino.MINI_T_SPIN
             }
         }
 

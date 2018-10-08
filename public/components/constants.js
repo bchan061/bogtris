@@ -26,28 +26,35 @@ class Colors {
     static get RED() {
         return 0xFF0000
     }
+
+    static get GRAY() {
+        return 0x999999
+    }
 }
 
 class GraphicsConstants {
     /**
      * Returns the default width of the screen.
      */
-    static get SCREEN_WIDTH() {
-        return 480
+    static get DEFAULT_SCREEN_WIDTH() {
+        return 854
     }
 
     /**
      * Returns the default height of the screen.
      */
-    static get SCREEN_HEIGHT() {
+    static get DEFAULT_SCREEN_HEIGHT() {
         return 480
     }
 
     /**
-     * Returns the block size, in pixels.
+     * Updates the block size.
      */
-    static get BLOCK_SIZE() {
-        return 18
+    static updateBlockSize() {
+        GraphicsConstants.BLOCK_SIZE = Math.min(
+            GraphicsConstants.SCREEN_WIDTH,
+            GraphicsConstants.SCREEN_HEIGHT
+        ) / 28
     }
 
     /**
@@ -55,43 +62,6 @@ class GraphicsConstants {
      */
     static get OBSTRUCT_TOP() {
         return 5
-    }
-}
-
-class Rules {
-    /**
-     * The max rotations acceptable before the piece is automatically placed down without any leeway.
-     */
-    static get MAX_ROTATIONS() {
-        return 20
-    }
-
-    /**
-     * The number of pieces visible in the next queue.
-     */
-    static get NEXT_PIECES() {
-        return 5
-    }
-
-    /**
-     * The time it takes to drop a tetromino without any action.
-     */
-    static get DROP_TIMER() {
-        return 1
-    }
-
-    /**
-     * The time it takes for the player to input any final action when the piece touches the board.
-     */
-    static get INACTIVE_TIMER() {
-        return 1
-    }
-
-    /**
-     * The amount of pieces that can be dropped before the back-to-back bonus gets removed.
-     */
-    static get BACK_TO_BACK() {
-        return 10
     }
 }
 

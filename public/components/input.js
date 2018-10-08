@@ -1,17 +1,18 @@
 /**
- * The input for the game.
+ * The input for a playfield.
  */
 class Input {
     /**
      * Initializes all the keys and sets up timers for DAS and ARR.
-     * @param {object} game the game
+     * @param {object} playfield the playfield
      */
-    constructor(game) {
+    constructor(playfield) {
         this.onKeyDown = this.onKeyDown.bind(this)
         this.onKeyUp = this.onKeyUp.bind(this)
-        this.game = game
+        this.playfield = playfield
         this.keys = {}
         this.keycodes = {}
+        this.active = true
 
         this.dasLeftTimer = new EndlessTimer(Timings.DAS)
         this.dasRightTimer = new EndlessTimer(Timings.DAS)
@@ -89,9 +90,9 @@ class Input {
      */
     arr() {
         if (this.arrRight) {
-            this.game.tryMove(1, 0)
+            this.playfield.tryMove(1, 0)
         } else {
-            this.game.tryMove(-1, 0)
+            this.playfield.tryMove(-1, 0)
         }
     }
 
@@ -99,7 +100,7 @@ class Input {
      * Handles soft drops.
      */
     softDrop() {
-        this.game.softDropTetromino()
+        this.playfield.softDropTetromino()
     }
 
     /**
@@ -109,31 +110,35 @@ class Input {
      * @param {number} elapsed the time elapsed from the previous frame
      */
     update(delta, elapsed) {
+        if (!this.active) {
+            return
+        }
+
         if (this.keys["Left"].isJustPressed()) {
-            this.game.tryMove(-1, 0)
+            this.playfield.tryMove(-1, 0)
             this.dasRightTimer.reset()
             this.arrTimer.reset()
         } else if (this.keys["Right"].isJustPressed()) {
-            this.game.tryMove(1, 0)
+            this.playfield.tryMove(1, 0)
             this.dasLeftTimer.reset()
             this.arrTimer.reset()
         }
 
         if (this.keys["Rotate left"].isJustPressed()) {
-            this.game.tryRotate(false)
+            this.playfield.tryRotate(false)
         }
         if (this.keys["Rotate right"].isJustPressed()) {
-            this.game.tryRotate(true)
+            this.playfield.tryRotate(true)
         }
         if (this.keys["Hold"].isJustPressed()) {
-            this.game.hold()
+            this.playfield.hold()
         }
 
         if (this.keys["Soft drop"].isJustPressed()) {
-            this.game.softDropTetromino()
+            this.playfield.softDropTetromino()
         }
         if (this.keys["Hard drop"].isJustPressed()) {
-            this.game.hardDropTetromino()
+            this.playfield.hardDropTetromino()
         }
 
         if (this.keys["Left"].isPressed()) {
@@ -160,10 +165,10 @@ class Input {
 
         if (this.keys["Soft drop"].isPressed()) {
             this.softDropTimer.update(elapsed)
-            this.game.dropActive = false
+            this.playfield.dropActive = false
         } else {
             this.softDropTimer.reset()
-            this.game.dropActive = true
+            this.playfield.dropActive = true
         }
     }
 }

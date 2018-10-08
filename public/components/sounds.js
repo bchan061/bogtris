@@ -40,5 +40,8 @@ class Sounds {
         Sounds.perfectClear = new Howl({
             src: ['assets/sound/perfectClear.wav']
         })
+        Sounds.garbage = new Howl({
+            src: ['assets/sound/garbage.wav']
+        })
     }
 }

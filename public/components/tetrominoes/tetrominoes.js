@@ -56,25 +56,39 @@ class Tetrominoes {
                 [0, 0, 0]
             ]
         )
+        this.tetrominoArray = [
+            this.iTetromino,
+            this.tTetromino,
+            this.oTetromino,
+            this.sTetromino,
+            this.zTetromino,
+            this.jTetromino,
+            this.lTetromino
+        ]
     }
 
     /**
-     * Returns the appropriate spawning location for the tetromino.
-     * @param {object} tetromino the tetromino to spawn in
-     * @param {object} board the board
+     * Tests all tetrominoes and rotations.
      */
-    getSpawningLocation(tetromino, board) {
-        let top = board.obstructTop - 1
-        let x = board.width / 2 - Math.ceil(tetromino.getWidth() / 2)
+    testTetrominoes() {
+        console.log("Testing tetrominoes and rotations.")
+        for (let tetrominoIndex in this.tetrominoArray) {
+            let tetromino = this.tetrominoArray[tetrominoIndex]
 
-        /* Test the top of the board. If it is occupied, the player has topped out; return null. */
-        if (board.tetrominoCollides(tetromino, x, top)) {
-            return null
-        } else {
-            return {
-                x: x,
-                y: top
-            }
+            tetromino.reset()
+            console.log("Initial rotation [" + tetromino.name + "]")
+            tetromino.logBox()
+            console.log("90 degree rotation right [" + tetromino.name + "]")
+            tetromino.rotateRight()
+            tetromino.logBox()
+            console.log("180 degree rotation [" + tetromino.name + "]")
+            tetromino.rotateRight()
+            tetromino.logBox()
+            console.log("270 degree rotation [" + tetromino.name + "]")
+            tetromino.rotateRight()
+            tetromino.logBox()
+
+            tetromino.reset()
         }
     }
 }
