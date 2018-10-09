@@ -97,8 +97,7 @@ class Rules {
                 defaultGarbage = 4
                 break;
         }
-
-        if (backToBack > 0 && (this.spin >= TTetromino.MINI_T_SPIN || cleared == 4)) {
+        if (backToBack > 0 && (spin >= TTetromino.MINI_T_SPIN || cleared == 4)) {
             defaultGarbage += 1
         }
 

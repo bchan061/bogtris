@@ -14,6 +14,7 @@ class Playfield {
         this.stage.addChild(this.randomGenerator.nextContainer)
         this.elapsed = 0
         this.width = 20 * GraphicsConstants.BLOCK_SIZE
+        this.garbageToAdd = 0
 
         this.dropTimer = new Timer(Rules.DROP_TIMER, this.perpetualDropTetromino.bind(this))
         this.dropActive = true
@@ -329,11 +330,19 @@ class Playfield {
     /**
      * Called when dropping a tetromino.
      * Allows a piece to be held again, if not already.
+     * Also adds garbage and checks for any line clears.
      */
     droppedTetromino() {
         this.blockHold = false
-
         this.checkClear()
+
+        if (this.garbageToAdd > 0) {
+            this.board.createGarbage(this.garbageToAdd)
+
+            Sounds.garbage.play()
+
+            this.garbageToAdd = 0
+        }
     }
 
     /**
@@ -389,6 +398,8 @@ class Playfield {
      */
     checkClear() {
         let cleared = this.board.checkForClear()
+        this.score += Scoring.getScoreDelta(cleared, this.spinClear, this.combo, this.back2Back)
+        this.offsetGarbage(Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back))
         if (cleared > 0) {
             this.combo += 1
             
@@ -425,7 +436,7 @@ class Playfield {
                 Sounds.perfectClear.play()
                 this.updateStatus("PC " + Utilities.numberToCount(cleared), false)
                 this.score += Scoring.PERFECT_CLEAR
-                this.game.sendGarbage(this, Rules.PERFECT_CLEAR_GARBAGE)
+                this.offsetGarbage(Rules.PERFECT_CLEAR_GARBAGE)
             }
         } else {
             this.back2Back -= 1
@@ -436,9 +447,21 @@ class Playfield {
                 this.updateStatus("T-Spin", false)
             }
         }
+    }
 
-        this.score += Scoring.getScoreDelta(cleared, this.spinClear, this.combo, this.back2Back)
-        this.game.sendGarbage(this, Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back))
+    /**
+     * Offsets the number of garbage to be dealt to this player.
+     * If the amount is larger, sends the garbage out.
+     * @param {number} amount the amount of garbage
+     */
+    offsetGarbage(amount) {
+        this.garbageToAdd -= amount
+        if (this.garbageToAdd < 0) {
+            let amountToSend = -this.garbageToAdd
+            this.game.sendGarbage(this, amountToSend)
+
+            this.garbageToAdd = 0
+        }
     }
 
     /**

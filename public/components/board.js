@@ -284,7 +284,7 @@ class Board {
         for (let y = 0; y < this.height; y++) {
             let row = this.staticBoard[y]
             let fullRow = true
-            for (let x = 0; x < this.width; x++) {
+            for (let x = 0; x < this.width && fullRow; x++) {
                 if (this.isStaticEmptyFromLocation(x, y)) {
                     fullRow = false
                 }
@@ -358,7 +358,11 @@ class Board {
                 let staticBlock = this.staticBoard[y][x]
 
                 spriteBlock.setColor(staticBlock)
-                spriteBlock.setActive(!this.isStaticEmptyFromBlock(staticBlock))
+                if (y >= this.obstructTop) {
+                    spriteBlock.setActive(!this.isStaticEmptyFromBlock(staticBlock))
+                } else {
+                    spriteBlock.setActive(false)
+                }
                 spriteBlock.setOpacity(1)
             }
         }

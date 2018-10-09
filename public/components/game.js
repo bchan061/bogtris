@@ -7,17 +7,15 @@ class Game {
         this.application = application
         this.inputDelegator = new InputDelegator(this)
 
+        
         let playfieldOne = new Playfield(this, new PIXI.Point(0, 0))
         let inputOne = new Input(playfieldOne)
         this.inputDelegator.addInput(inputOne)
         playfieldOne.setInput(inputOne)
         this.addPlayfield(playfieldOne)
+        
 
-        let playfieldTwo = new Playfield(this, new PIXI.Point(GraphicsConstants.SCREEN_WIDTH - 20 * GraphicsConstants.BLOCK_SIZE, 0))
-        let inputTwo = new AIInput(playfieldTwo)
-        this.inputDelegator.addInput(inputTwo)
-        playfieldTwo.setInput(inputTwo)
-        this.addPlayfield(playfieldTwo)
+        this.aiGenetic = new AIGenetic(this)
     }
 
     /**
@@ -29,6 +27,20 @@ class Game {
     }
 
     /**
+     * Removes a playfield from the game.
+     * @param {*} playfield the playfield to remove
+     */
+    removePlayfield(playfield) {
+        for (let i = 0; i < this.playfields.length; i++) {
+            let potentialPlayfield = this.playfields[i]
+            if (potentialPlayfield == playfield) {
+                this.playfields.splice(i, 1)
+                this.application.stage.removeChild(potentialPlayfield.stage)
+            }
+        }
+    }
+
+    /**
      * Sends garbage to all boards besides the sender.
      * @param {object} sender the sender
      * @param {number} amount the amount of garbage
@@ -37,9 +49,11 @@ class Game {
         for (let i = 0; i < this.playfields.length; i++) {
             let playfield = this.playfields[i]
             if (playfield != sender) {
-                playfield.board.createGarbage(amount)
+                playfield.garbageToAdd += amount
             }
         }
+
+        this.aiGenetic.acceptGarbage(amount)
     }
 
     /**
@@ -59,5 +73,7 @@ class Game {
             this.playfields[i].update(delta, elapsed)
         }
         this.inputDelegator.update(delta, elapsed)
+
+        this.aiGenetic.update(delta, elapsed)
     }
 }
