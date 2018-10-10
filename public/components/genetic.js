@@ -4,7 +4,7 @@
  */
 class Population {
     static get PARENT_SURVIVES() {
-        return 0.8
+        return 1
     }
 
     constructor() {
@@ -13,7 +13,7 @@ class Population {
         this.generation = 1
         this.individualCount = 1
 
-        this.cutoff = 0.6
+        this.cutoff = 0.4
         this.lucky = 0.1
     }
 
@@ -75,6 +75,8 @@ class Population {
         this.breed()
 
         console.log("Selected onto generation " + this.generation)
+
+        this.sendIndividuals()
     }
     
     breed() {
@@ -101,6 +103,36 @@ class Population {
         }
 
         this.individuals = newIndividuals
+    }
+
+    sendIndividuals() {
+        let data = {
+            "generation": this.generation,
+            "individuals": this.individuals
+        }
+        return fetch("http://localhost:3000/log", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function(response) {
+            console.log("Response received: " + response.json())
+        })
+    }
+
+    loadFromData(data) {
+        let parsedData = data
+        this.generation = parsedData.generation
+        for (let i = 0; i < parsedData.individuals.length; i++) {
+            let individualObject = parsedData.individuals[i]
+            let individual = new Individual(new Chromosome(individualObject.chromosome.genes))
+
+            this.individuals.push(individual)
+        }
     }
 
     update() {

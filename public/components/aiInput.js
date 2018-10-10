@@ -40,9 +40,9 @@ class AIInput extends Input {
         relativeHeights = relativeHeights[0]
 
         return this.getGarbage(cleared) * this.garbageMultiplier
-        - this.calculateHoles(newBoard) * this.holesMultiplier
-        - relativeHeights * this.relativeHeightMultiplier
-        - heights * this.heightsMultiplier
+        + this.calculateHoles(newBoard) * this.holesMultiplier
+        + relativeHeights * this.relativeHeightMultiplier
+        + heights * this.heightsMultiplier
     }
 
     /**
@@ -142,15 +142,14 @@ class AIInput extends Input {
             if (fullRow) {
                 cleared += 1
 
-                let row = board[y]
-                /* Blank out the current row. */
-                for (let x = 0; x < this.width; x++) {
-                    board[y][x] = 0
+                let blankRow = []
+                for (let x = 0; x < board[0].length; x++) {
+                    blankRow[x] = 0
                 }
 
                 /* Shift all the above rows down and add a blank row on top. */
                 board.splice(y, 1)
-                board.unshift(row)
+                board.unshift(blankRow)
             }
         }
 

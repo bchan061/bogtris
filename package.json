@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/bchan061/tetrisweb#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "pixi.js": "^4.8.2"
   }

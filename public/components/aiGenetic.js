@@ -15,6 +15,8 @@ class AIGenetic {
         this.aiTime = 30
         this.aiPopulation = new Population()
         this.aiPopulation.populateInitial(64, 4)
+        /* Load from test/genetic.json */
+        // this.aiPopulation.loadFromData(previousGeneration)
         this.aiTimer = new Timer(this.aiTime, this.end.bind(this))
 
         this.createNewAI()
@@ -50,7 +52,7 @@ class AIGenetic {
         input.relativeHeightMultiplier = this.currentAIIndividual.chromosome.genes[2]
         input.heightsMultiplier = this.currentAIIndividual.chromosome.genes[3]
     
-        console.log("Generation " + this.aiPopulation.generation + ", Individual " + this.aiPopulation.individualCount)
+        console.log("Generation " + this.aiPopulation.generation + ", Individual " + (this.aiPopulation.individualCount - 1))
         console.log("Gene 1 (garbage): " + this.currentAIIndividual.chromosome.genes[0])
         console.log("Gene 2 (holes): " + this.currentAIIndividual.chromosome.genes[1])
         console.log("Gene 3 (relativeHeight): " + this.currentAIIndividual.chromosome.genes[2])

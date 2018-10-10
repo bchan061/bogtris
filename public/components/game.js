@@ -7,14 +7,12 @@ class Game {
         this.application = application
         this.inputDelegator = new InputDelegator(this)
 
-        
         let playfieldOne = new Playfield(this, new PIXI.Point(0, 0))
         let inputOne = new Input(playfieldOne)
         this.inputDelegator.addInput(inputOne)
         playfieldOne.setInput(inputOne)
         this.addPlayfield(playfieldOne)
         
-
         this.aiGenetic = new AIGenetic(this)
     }
 
