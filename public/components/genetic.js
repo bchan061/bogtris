@@ -43,7 +43,7 @@ class Population {
         let nextIndividuals = []
         /* Sort the individuals by fitness. */
         this.finishedIndividuals.sort(function(a, b) {
-            a.fitness - b.fitness
+            return a.fitness - b.fitness
         })
 
         this.finishedIndividuals.reverse()
@@ -150,7 +150,7 @@ class Chromosome {
         return 0.1
     }
     static get MUTATION_THRESHOLD() {
-        return 1
+        return 5
     }
 
     constructor(genes) {

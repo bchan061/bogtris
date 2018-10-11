@@ -258,6 +258,9 @@ class Playfield {
 
             this.rotations += 1
             this.inactiveTimer.reset()
+            return true
+        } else {
+            return false
         }
     }
 
@@ -338,7 +341,7 @@ class Playfield {
 
         if (this.garbageToAdd > 0) {
             this.board.createGarbage(this.garbageToAdd)
-
+            this.board.update()
             Sounds.garbage.play()
 
             this.garbageToAdd = 0
@@ -376,6 +379,10 @@ class Playfield {
                 this.tetrominoLocation = this.board.getSpawningLocation(
                     this.currentTetromino
                 )
+
+                if (this.tetrominoLocation == null) {
+                    this.setGameOver()
+                }
             } else {
                 this.getNextTetromino()
             }

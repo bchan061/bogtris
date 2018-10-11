@@ -1,5 +1,5 @@
 {
-  "name": "tetrisweb",
+  "name": "bogtris",
   "version": "1.0.0",
   "description": "Tetris clone",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bchan061/tetrisweb.git"
+    "url": "git+https://github.com/bchan061/bogtris.git"
   },
   "author": "Brandon Chan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bchan061/tetrisweb/issues"
+    "url": "https://github.com/bchan061/bogtris/issues"
   },
-  "homepage": "https://github.com/bchan061/tetrisweb#readme",
+  "homepage": "https://github.com/bchan061/bogtris#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",

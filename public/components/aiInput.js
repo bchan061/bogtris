@@ -5,7 +5,7 @@
 class AIInput extends Input {
     constructor(playfield) {
         super(playfield)
-        this.actTimer = new Timer(0.0125, this.act.bind(this))
+        this.actTimer = new Timer(0.175, this.act.bind(this))
         this.active = true
 
         this.decidedX = 0
@@ -16,6 +16,9 @@ class AIInput extends Input {
         this.holesMultiplier = 1
         this.relativeHeightMultiplier = 1
         this.heightsMultiplier = 1
+        this.holdOffset = 0
+
+        this.previousHeuristic = 0
 
         /* Hook the dropped tetromino event with the AIInput. */
         let dropFunction = this.onDrop.bind(this)
@@ -170,7 +173,7 @@ class AIInput extends Input {
         }
         for (let rotation = 0; rotation < 4; rotation++) {
             currentTetromino.currentShapeIndex = rotation
-            for (let x = 0; x < this.playfield.board.width; x++) {
+            for (let x = -currentTetromino.getWidth(); x < this.playfield.board.width; x++) {
                 location.x = x
 
                 if (
@@ -188,9 +191,15 @@ class AIInput extends Input {
             }
         }
 
-        this.decidedX = maxX
-        this.decidedRotation = maxRotation
-        this.decided = true
+        /* Net difference in heuristic is too bad. */
+        if (!this.playfield.blockHold && maxHeuristic - this.previousHeuristic < this.holdOffset) {
+            this.playfield.hold()
+        } else {
+            this.previousHeuristic = maxHeuristic
+            this.decidedX = maxX
+            this.decidedRotation = maxRotation
+            this.decided = true
+        }
 
         currentTetromino.reset()
     }
@@ -275,17 +284,21 @@ class AIInput extends Input {
                 let position = this.playfield.tetrominoLocation
         
                 let finished = true
+                let success = false
                 if (
                     currentTetromino != this.playfield.tetrominoes.oTetromino &&
                     this.decidedRotation != currentTetromino.currentShapeIndex
                 ) {
-                    this.playfield.tryRotate(true)
+                    success = success || this.playfield.tryRotate(true)
                     finished = false
                 }
                 if (this.decidedX != position.x) {
                     let displacement = Math.sign(this.decidedX - position.x)
-                    this.playfield.tryMove(displacement, 0)
+                    success = success || this.playfield.tryMove(displacement, 0)
                     finished = false
+                }
+                if (!success) {
+                    this.playfield.softDropTetromino()
                 }
                 if (finished) {
                     this.playfield.hardDropTetromino()
