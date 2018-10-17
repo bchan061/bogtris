@@ -5,8 +5,9 @@ class AIGenetic {
     /**
      * Initializes an AIGenetic instance.
      */
-    constructor(game) {
-        this.game = game
+    constructor(screen) {
+        this.game = screen.game
+        this.screen = screen
         this.currentAIPlayfield = null
         this.currentAIInput = null
         this.currentAIIndividual = null
@@ -37,7 +38,7 @@ class AIGenetic {
      * Creates a new AI.
      */
     createNewAI() {
-        let playfield = new Playfield(this.game, new PIXI.Point(GraphicsConstants.SCREEN_WIDTH - 20 * GraphicsConstants.BLOCK_SIZE, 0))
+        let playfield = new Playfield(this.screen, new PIXI.Point(GraphicsConstants.SCREEN_WIDTH - 20 * GraphicsConstants.BLOCK_SIZE, 0))
         let input = new AIInput(playfield)
         this.game.inputDelegator.addInput(input)
         playfield.setInput(input)
@@ -60,7 +61,7 @@ class AIGenetic {
         console.log("Gene 4 (height): " + this.currentAIIndividual.chromosome.genes[3])
         console.log("Gene 5 (hold offset): " + this.currentAIIndividual.chromosome.genes[4])
 
-        this.game.addPlayfield(playfield)
+        this.screen.addPlayfield(playfield)
     }
 
     /**
@@ -75,7 +76,7 @@ class AIGenetic {
      * Removes the AI from the game.
      */
     removeAI() {
-        this.game.removePlayfield(this.currentAIPlayfield)
+        this.screen.removePlayfield(this.currentAIPlayfield)
         this.game.inputDelegator.removeInput(this.currentAIInput)
     }
 

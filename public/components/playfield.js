@@ -5,8 +5,8 @@ class Playfield {
     /**
      * Constructs a playfield.
      */
-    constructor(game, offset) {
-        this.game = game
+    constructor(screen, offset) {
+        this.screen = screen
         this.stage = new PIXI.Container()
         this.board = new Board(this)
         this.tetrominoes = new Tetrominoes()
@@ -376,12 +376,14 @@ class Playfield {
             if (previouslyHeldTetromino != null) {
                 this.currentTetromino = previouslyHeldTetromino
                 this.currentTetromino.reset()
-                this.tetrominoLocation = this.board.getSpawningLocation(
+                let spawningLocation = this.board.getSpawningLocation(
                     this.currentTetromino
                 )
 
                 if (this.tetrominoLocation == null) {
                     this.setGameOver()
+                } else {
+                    this.tetrominoLocation = spawningLocation
                 }
             } else {
                 this.getNextTetromino()
@@ -465,7 +467,7 @@ class Playfield {
         this.garbageToAdd -= amount
         if (this.garbageToAdd < 0) {
             let amountToSend = -this.garbageToAdd
-            this.game.sendGarbage(this, amountToSend)
+            this.screen.sendGarbage(this, amountToSend)
 
             this.garbageToAdd = 0
         }
