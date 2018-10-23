@@ -70,4 +70,15 @@ class AIBattleScreen extends Screen {
 
         this.aiGenetic.update(delta, elapsed)
     }
+
+    detach() {
+        super.detach()
+        for (let i = 0; i < this.playfields.length; i++) {
+            let playfield = this.playfields[i]
+            this.stage.removeChild(playfield.stage)
+            
+        }
+
+        this.playfields = []
+    }
 }

@@ -22,6 +22,7 @@ class Playfield {
         this.spinClear = 0
         this.rotations = 0
         this.score = 0
+        this.combo = 0
         this.back2Back = 0
 
         this.boardOffset = new PIXI.Point(18, 18)
@@ -276,7 +277,7 @@ class Playfield {
             )
         ) {
             this.tetrominoLocation.y += 1
-            this.score += 1
+            this.score += Scoring.SOFT_DROP
             Sounds.drop.play()
             this.spinClear = 0
         } else {
