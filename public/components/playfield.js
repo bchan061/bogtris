@@ -381,7 +381,7 @@ class Playfield {
                     this.currentTetromino
                 )
 
-                if (this.spawningLocation == null) {
+                if (spawningLocation == null) {
                     this.setGameOver()
                 } else {
                     this.tetrominoLocation = spawningLocation
