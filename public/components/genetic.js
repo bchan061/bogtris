@@ -122,6 +122,10 @@ class Population {
         }).then(function(response) {
             console.log("Response received: " + response.json())
         })
+
+        /** Log a copy of a generation into the console for safe-keeping */
+        let jsonData = JSON.stringify(data)
+        console.log(jsonData)
     }
 
     loadFromData(data) {

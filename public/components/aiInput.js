@@ -5,7 +5,8 @@
 class AIInput extends Input {
     constructor(playfield) {
         super(playfield)
-        this.actTimer = new Timer(0.175, this.act.bind(this))
+        /* Speed it up! */
+        this.actTimer = new Timer(0.01, this.act.bind(this))
         this.active = true
 
         this.decidedX = 0
@@ -111,7 +112,8 @@ class AIInput extends Input {
      * Returns the garbage from the lines cleared and other statistics.
      */
     getGarbage(cleared) {
-        return Rules.computeGarbage(cleared, this.playfield.spinClear, this.playfield.combo, this.playfield.backToBack)
+        /* Disable the combo in the heuristic so the AI hopefully stacks more smart */
+        return Rules.computeGarbage(cleared, this.playfield.spinClear, this.playfield.combo, this.playfield.backToBack, false)
     }
 
     /**

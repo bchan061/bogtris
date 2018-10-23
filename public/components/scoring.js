@@ -49,7 +49,6 @@ class Scoring {
         if (backToBack > 0) {
             increment *= Scoring.BACK_TO_BACK_MULTIPLIER
         }
-
         increment += Scoring.getComboBonus(combo)
 
         return increment

@@ -69,7 +69,7 @@ class Rules {
     /**
      * Computes the number of garbage from an action.
      */
-    static computeGarbage(cleared, spin, combo, backToBack) {
+    static computeGarbage(cleared, spin, combo, backToBack, enableCombo) {
         let defaultGarbage = 0
         switch (cleared) {
             case 1:
@@ -101,6 +101,9 @@ class Rules {
             defaultGarbage += 1
         }
 
-        return defaultGarbage + Rules.getGarbageBonusFromCombo(combo)
+        if (enableCombo) {
+            defaultGarbage += Rules.getGarbageBonusFromCombo(combo)
+        }
+        return defaultGarbage
     }
 }
