@@ -110,6 +110,12 @@ class Population {
             "generation": this.generation,
             "individuals": this.individuals
         }
+        
+
+        /** Log a copy of a generation into the console for safe-keeping */
+        let jsonData = JSON.stringify(data)
+        console.log(jsonData)
+        
         return fetch("http://localhost:3000/log", {
             method: "POST",
             mode: "cors",
@@ -122,10 +128,6 @@ class Population {
         }).then(function(response) {
             console.log("Response received: " + response.json())
         })
-
-        /** Log a copy of a generation into the console for safe-keeping */
-        let jsonData = JSON.stringify(data)
-        console.log(jsonData)
     }
 
     loadFromData(data) {
