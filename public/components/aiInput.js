@@ -112,8 +112,7 @@ class AIInput extends Input {
      * Returns the garbage from the lines cleared and other statistics.
      */
     getGarbage(cleared) {
-        /* Disable the combo in the heuristic so the AI hopefully stacks more smart */
-        return Rules.computeGarbage(cleared, this.playfield.spinClear, this.playfield.combo, this.playfield.backToBack, false)
+        return Rules.computeGarbage(cleared, this.playfield.spinClear, this.playfield.combo, this.playfield.backToBack)
     }
 
     /**

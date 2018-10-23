@@ -16,8 +16,8 @@ class AIGenetic {
         this.aiTime = 30
         this.aiPopulation = new Population()
         /* Load from test/genetic.json */
-        //this.aiPopulation.loadFromData(previousGeneration)
-        this.aiPopulation.populateInitial(48, 5)
+        this.aiPopulation.loadFromData(previousGeneration)
+        //this.aiPopulation.populateInitial(48, 5)
         this.aiTimer = new Timer(this.aiTime, this.end.bind(this))
 
         this.createNewAI()
