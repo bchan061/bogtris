@@ -17,7 +17,7 @@ app.use(
 )
 
 app.post('/log', function(request, response) {
-    fs.writeFile("genetic.json", JSON.stringify(request.body), (err) => {
+    fs.writeFile("genetic.json", "previousGeneration = " + JSON.stringify(request.body), (err) => {
         if (err) {
             console.log("Error when writing")
             response.send("Couldn't write")
