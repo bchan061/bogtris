@@ -10,6 +10,8 @@ Express is used to host the app server (at `index.js`), although any web server 
 
 PIXI.js and Howler.js includes are already included.
 
+Gamepads are supported. The controls assume that the controller connected is an XInput controller.
+
 ## Images
 
 ![Showcasing DT cannon via SRS spins](https://www.ocf.berkeley.edu/~branchan/images/bogtris-1.png)
