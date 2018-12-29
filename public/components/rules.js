@@ -28,13 +28,6 @@ class Rules {
     }
 
     /**
-     * The amount of pieces that can be dropped before the back-to-back bonus gets removed.
-     */
-    static get BACK_TO_BACK() {
-        return 10
-    }
-
-    /**
      * The probability that the garbage lands in the same column.
      */
     static get GARBAGE_IN_SAME_COLUMN() {
@@ -57,9 +50,9 @@ class Rules {
             return 1
         } else if (combo >= 4 && combo <= 5) {
             return 2
-        } else if (combo >= 6 && combo <= 7) {
+        } else if (combo >= 6 && combo <= 11) {
             return 3
-        } else if (combo >= 8) {
+        } else if (combo >= 12) {
             return 4
         } else {
             return 0
@@ -97,7 +90,7 @@ class Rules {
                 defaultGarbage = 4
                 break;
         }
-        if (backToBack > 0 && (spin >= TTetromino.MINI_T_SPIN || cleared == 4)) {
+        if (backToBack && (spin >= TTetromino.MINI_T_SPIN || cleared == 4)) {
             defaultGarbage += 1
         }
 

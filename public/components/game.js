@@ -5,7 +5,7 @@ class Game {
     constructor(application) {
         this.application = application
         this.inputDelegator = new InputDelegator(this)
-        this.screen = new AIBattleScreen(this.application, this)
+        this.screen = new EndlessScreen(this.application, this)
     }
 
     attachScreen(newScreen) {

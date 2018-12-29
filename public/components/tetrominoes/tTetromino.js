@@ -23,7 +23,15 @@ class TTetromino extends BasicTetromino {
      * Checks if the current T tetromino resulted from a spin.
      * Returns 0 if no spin, 1 for mini, and 2 for a full-spin.
      */
-    checkTSpin(board, location) {
+    checkTSpin(board, location, offset) {
+        /*
+            The fifth offset is guaranteed to be a true T-spin.
+            This is to allow methods like STSD to work.
+        */
+        if (offset == 4) {
+            return TTetromino.T_SPIN
+        }
+
         /* Check the corners of the t tetromino. */
 
         let corner1 = board.willCollide(location.x, location.y)

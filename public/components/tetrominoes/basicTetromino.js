@@ -26,6 +26,7 @@ class BasicTetromino extends Tetromino {
      * @param {object} board the board
      * @param {object} location the location of the tetromino
      * @param {object} clockwise whether to rotate the piece clockwise
+     * @returns -1 if unsuccessful, the offset number otherwise
      */
     tryRotate(board, location, clockwise) {
         let nextRotationBox = -1
@@ -61,7 +62,7 @@ class BasicTetromino extends Tetromino {
                 location.x += kick[0]
                 location.y += kick[1]
 
-                return true
+                return i
             } else {
                 /* Reverse the rotation */
                 if (clockwise) {
@@ -73,6 +74,6 @@ class BasicTetromino extends Tetromino {
         }
 
         /* No kicks work. */
-        return false
+        return -1
     }
 }

@@ -54,6 +54,9 @@ class AIInput extends Input {
      * @param {object} board an array of numbers listing blocks
      */
     calculateHoles(board) {
+        /*
+        // This method calculates holes according to the number of blocks above a hole.
+        // This heavily discourages stacking above any hole, which leads to a lot of single clears.
         let holes = 0
         for (let x = 0; x < board[0].length; x++) {
             let empty = 0
@@ -68,6 +71,27 @@ class AIInput extends Input {
             }
         }   
 
+        return holes
+        */
+
+        let holes = 0
+        for (let y = 0; y < board.length; y++) {
+            let rowHoles = 0
+            let allEmpty = true
+            for (let x = board.length - 1; x >= 0; x--) {
+                if (board[y][x] == 0) {
+                    rowHoles += 1
+                } else if (board[y][x] != 0) {
+                    allEmpty = false
+                }
+                
+                if (allEmpty) {
+                    return holes
+                } else {
+                    holes += rowHoles
+                }
+            }
+        }
         return holes
     }
 

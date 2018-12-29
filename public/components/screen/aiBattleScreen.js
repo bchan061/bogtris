@@ -30,6 +30,7 @@ class AIBattleScreen extends Screen {
             if (potentialPlayfield == playfield) {
                 this.playfields.splice(i, 1)
                 this.stage.removeChild(potentialPlayfield.stage)
+                this.game.inputDelegator.removeInput(playfield.input)
             }
         }
     }
@@ -76,6 +77,7 @@ class AIBattleScreen extends Screen {
         for (let i = 0; i < this.playfields.length; i++) {
             let playfield = this.playfields[i]
             this.stage.removeChild(playfield.stage)
+            this.game.inputDelegator.removeInput(playfield.input)
             
         }
 

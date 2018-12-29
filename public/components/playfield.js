@@ -23,7 +23,7 @@ class Playfield {
         this.rotations = 0
         this.score = 0
         this.combo = 0
-        this.back2Back = 0
+        this.back2Back = false
 
         this.boardOffset = new PIXI.Point(18, 18)
         this.board.stage.position = this.boardOffset        
@@ -241,12 +241,13 @@ class Playfield {
      * @param {boolean} clockwise whether to rotate the tetromino clockwise or not
      */
     tryRotate(clockwise) {
-        if (this.currentTetromino.tryRotate(this.board, this.tetrominoLocation, clockwise)) {
+        let result = this.currentTetromino.tryRotate(this.board, this.tetrominoLocation, clockwise)
+        if (result != -1) {
             this.inactiveTimer.reset()
             if (this.currentTetromino == this.tetrominoes.tTetromino) {
                 this.spinClear = false
 
-                let spinResult = this.currentTetromino.checkTSpin(this.board, this.tetrominoLocation)
+                let spinResult = this.currentTetromino.checkTSpin(this.board, this.tetrominoLocation, result)
                 if (spinResult >= 1) {
                     Sounds.spin.play()
                     this.spinClear = spinResult
@@ -414,7 +415,7 @@ class Playfield {
             this.combo += 1
             
             if (this.spinClear >= TTetromino.MINI_T_SPIN) {
-                if (this.back2Back > 0) {
+                if (this.back2Back) {
                     Sounds.backToBack.play()
                 } else {
                     Sounds.clearSpin.play()
@@ -425,21 +426,21 @@ class Playfield {
                 } else {
                     this.updateStatus("T-Spin " + Utilities.numberToCount(cleared), true)
                 }
-                this.back2Back = Rules.BACK_TO_BACK
+                this.back2Back = true
             } else if (cleared >= 4) {
-                if (this.back2Back > 0) {
+                if (this.back2Back) {
                     Sounds.backToBack.play()
                 } else {
                     Sounds.tetris.play()
                 }
                 this.updateStatus("Tetris", true)
-                this.back2Back = Rules.BACK_TO_BACK
+                this.back2Back = true
             } else {
                 Sounds.clear.play()
+                this.back2Back = false
                 if (cleared > 0) {
                     this.updateStatus(Utilities.numberToCount(cleared), false)
                 }
-                this.back2Back -= 1
             }
 
             if (this.board.checkForPerfectClear()) {
@@ -449,7 +450,6 @@ class Playfield {
                 this.offsetGarbage(Rules.PERFECT_CLEAR_GARBAGE)
             }
         } else {
-            this.back2Back -= 1
             this.combo = 0
             if (this.spinClear == TTetromino.MINI_T_SPIN) {
                 this.updateStatus("Mini T-Spin", false)
