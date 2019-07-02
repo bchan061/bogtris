@@ -260,6 +260,7 @@ class Playfield {
 
             this.rotations += 1
             this.inactiveTimer.reset()
+            this.dropTimer.reset()
             return true
         } else {
             return false
@@ -393,6 +394,7 @@ class Playfield {
 
             this.blockHold = true
             this.spinClear = 0
+            this.rotations = 0
             this.inactiveTimer.deactivate()
             this.inactiveTimer.reset()
             Sounds.hold.play()

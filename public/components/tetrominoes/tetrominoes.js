@@ -30,14 +30,7 @@ class Tetrominoes {
                 [0, 0, 0]
             ]
         )
-        this.oTetromino = new Tetromino(
-            "O",
-            Colors.YELLOW,
-            [
-                [1, 1],
-                [1, 1]
-            ]
-        )
+        this.oTetromino = new OTetromino()
         this.sTetromino = new BasicTetromino(
             "S",
             Colors.GREEN,

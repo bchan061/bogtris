@@ -40,10 +40,12 @@ class BasicTetromino extends Tetromino {
          * If the next offset is A, and the current offset is B, we calculate B - A.
          */
         for (let i = 0; i < this.offsets[0].length; i++) {
-            let offsetA = this.offsets[nextRotationState][i]
-            let offsetB = this.offsets[this.currentShapeIndex][i]
-            let kick = [offsetB[0] - offsetA[0], offsetB[1] - offsetA[1]]
-            /* Flip the y-values for the kick */
+            let offsetA = this.offsets[this.currentShapeIndex][i]
+            let offsetB = this.offsets[nextRotationState][i]
+            let kick = [offsetA[0] - offsetB[0], offsetA[1] - offsetB[1]]
+
+            // Offsets are set so that Y points up.
+            // Our Y values are pointing down, so we need to invert the kick's Y coordinate
             kick[1] = -kick[1]
 
             /* Apply the kick and see if it succeeds. */

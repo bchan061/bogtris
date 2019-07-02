@@ -1,3 +1,5 @@
+var RULES_DROP = 1
+
 class Rules {
     /**
      * The max rotations acceptable before the piece is automatically placed down without any leeway.
@@ -17,7 +19,19 @@ class Rules {
      * The time it takes to drop a tetromino without any action.
      */
     static get DROP_TIMER() {
+        return RULES_DROP
+    }
+
+    static set DROP_TIMER(newDrop) {
+        RULES_DROP = newDrop
+    }
+
+    static get DROP_TIMER_NORMAL() {
         return 1
+    }
+
+    static get DROP_TIMER_FAST() {
+        return 0
     }
 
     /**
@@ -98,5 +112,14 @@ class Rules {
             defaultGarbage += Rules.getGarbageBonusFromCombo(combo)
         }
         return defaultGarbage
+    }
+}
+
+// GET parameters to adjust speed
+var urlParams = new URLSearchParams(window.location.search)
+
+if (urlParams.has('speed')) {
+    if (urlParams.get('speed') == 'fast') {
+        Rules.DROP_TIMER = Rules.DROP_TIMER_FAST
     }
 }

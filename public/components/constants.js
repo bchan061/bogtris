@@ -37,7 +37,8 @@ class GraphicsConstants {
      * Returns the default width of the screen.
      */
     static get DEFAULT_SCREEN_WIDTH() {
-        return 854
+        //return 854
+        return 480
     }
 
     /**
