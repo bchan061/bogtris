@@ -24,6 +24,8 @@ const app = new PIXI.Application({
     height: height
 })
 
+var game;
+
 Sounds.init()
 
 PIXI.loader
@@ -73,7 +75,7 @@ function assignVirtualKeyBindings(inputDelegator) {
 function init() {
     document.getElementById("gameDiv").appendChild(app.view)
 
-    let game = new Game(app)
+    game = new Game(app)
 
     window.onkeydown = (keycode) => game.inputDelegator.onKeyDown(keycode.which)
     window.onkeyup = (keycode) => game.inputDelegator.onKeyUp(keycode.which)

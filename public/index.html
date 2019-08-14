@@ -17,7 +17,7 @@
         <!-- Howler.js 2.0.15 -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.15/howler.min.js"></script>
 
-        <!-- There has to be a better way to link all of this -->
+        <!-- Should have used Node -->
         <script type="text/javascript" src="components/sounds.js"> </script>
         <script type="text/javascript" src="components/constants.js"> </script>
         <script type="text/javascript" src="components/utilities.js"> </script>
@@ -53,6 +53,8 @@
 
         <script type="text/javascript" src="test/genetic.json"> </script>
 
+        <script type="text/javascript" src="components/extra.js"> </script>
+
         <script type="text/javascript" src="main.js"> </script>
 
         <div id="game">
@@ -72,6 +74,13 @@
                     <img src="htmlAssets/rotateLeft.svg" class="virtualKey" id="leftRotate">
                     <img src="htmlAssets/rotateRight.svg" class="virtualKey" id="rightRotate">
                 </div>
+            </div>
+
+            <div id="extra">
+                <button onClick="javascript:addGarbage(1)">Add Single Garbage</button>
+                <button onClick="javascript:addGarbage(10)">Add Ten Garbage</button>
+                <button onClick="javascript:addGarbageTimeout(3)">Add Garbage Every 3 Seconds</button>
+                <button onClick="javascript:clearGarbageTimeout(1)">Clear Timeout</button>
             </div>
         </div>
     </body>

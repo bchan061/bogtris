@@ -114,12 +114,3 @@ class Rules {
         return defaultGarbage
     }
 }
-
-// GET parameters to adjust speed
-var urlParams = new URLSearchParams(window.location.search)
-
-if (urlParams.has('speed')) {
-    if (urlParams.get('speed') == 'fast') {
-        Rules.DROP_TIMER = Rules.DROP_TIMER_FAST
-    }
-}

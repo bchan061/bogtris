@@ -44,3 +44,20 @@ canvas {
 body {
     background-color: lightgray;
 }
+
+#extra {
+    position: absolute;
+    left: 1em;
+    top: 1em;
+
+    display: flex;
+    flex-direction: column;
+    
+    opacity: 0.1;
+    transition: 0.12s;
+    width: 10%;
+}
+
+#extra:hover {
+    opacity: 1;
+}

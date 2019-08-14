@@ -343,12 +343,18 @@ class Playfield {
         this.checkClear()
 
         if (this.garbageToAdd > 0) {
-            this.board.createGarbage(this.garbageToAdd)
-            this.board.update()
-            Sounds.garbage.play()
-
+            this.addGarbage(this.garbageToAdd)
             this.garbageToAdd = 0
         }
+    }
+
+    /**
+     * Sends the amount of garbage to the board.
+     */
+    addGarbage(amount) {
+        this.board.createGarbage(amount)
+        this.board.update()
+        Sounds.garbage.play()
     }
 
     /**
@@ -412,7 +418,6 @@ class Playfield {
     checkClear() {
         let cleared = this.board.checkForClear()
         this.score += Scoring.getScoreDelta(cleared, this.spinClear, this.combo, this.back2Back)
-        this.offsetGarbage(Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back))
         if (cleared > 0) {
             this.combo += 1
             
@@ -450,6 +455,8 @@ class Playfield {
                 this.updateStatus("PC " + Utilities.numberToCount(cleared), false)
                 this.score += Scoring.PERFECT_CLEAR
                 this.offsetGarbage(Rules.PERFECT_CLEAR_GARBAGE)
+            } else {
+                this.offsetGarbage(Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back))
             }
         } else {
             this.combo = 0
