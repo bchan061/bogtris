@@ -9,6 +9,10 @@ class Timer {
         this.elapsed = 0
     }
 
+    changeTickTime(newTickTime) {
+        this.tickTime = newTickTime
+    }
+
     update(elapsed) {
         this.elapsed += elapsed
 

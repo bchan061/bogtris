@@ -30,6 +30,7 @@ Sounds.init()
 
 PIXI.loader
     .add("assets/block.svg")
+    .add("assets/block2.svg")
     .add("assets/grid.svg")
     .add("assets/fonts/font.fnt")
 .load(init)

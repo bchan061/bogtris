@@ -33,6 +33,8 @@ class Playfield {
         this.holdTetromino = null
         this.blockHold = null
 
+        this.instantDrop = false
+
         this.stage.position = offset
 
         this.createHoldDisplay()
@@ -312,9 +314,9 @@ class Playfield {
     }
 
     /**
-     * Hard drops the tetromino down.
+     * Plants the tetromino down to the lowest available point.
      */
-    hardDropTetromino() {
+    plantTetromino() {
         while (
             !this.board.tetrominoCollides(
                 this.currentTetromino,
@@ -326,6 +328,13 @@ class Playfield {
             this.score += Scoring.HARD_DROP
             this.spinClear = 0
         }
+    }
+
+    /**
+     * Hard drops the tetromino down.
+     */
+    hardDropTetromino() {
+        this.plantTetromino()
         Sounds.hardDrop.play()
 
         this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
@@ -506,6 +515,10 @@ class Playfield {
     update(delta, elapsed) {
         if (!this.gameOver) {
             this.elapsed += elapsed
+
+            if (this.instantDrop) {
+                this.plantTetromino()
+            }
 
             if (this.dropActive) {
                 this.dropTimer.update(elapsed)
