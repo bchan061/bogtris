@@ -16,8 +16,8 @@ class AIGenetic {
         this.aiTime = 30
         this.aiPopulation = new Population()
         /* Load from test/genetic.json */
-        this.aiPopulation.loadFromData(previousGeneration)
-        //this.aiPopulation.populateInitial(48, 5)
+        //this.aiPopulation.loadFromData(previousGeneration)
+        this.aiPopulation.populateInitial(24, 6)
         this.aiTimer = new Timer(this.aiTime, this.end.bind(this))
 
         this.createNewAI()
@@ -27,7 +27,7 @@ class AIGenetic {
      * Called at the end of the timer.
      */
     end() {
-        let fitness = (this.currentAIGarbage) / this.aiTime
+        let fitness = this.aiTime + (this.currentAIGarbage) / this.aiTime
         console.log("Individual finished with fitness " + fitness)
         this.currentAIIndividual.assignFitness(fitness)
         this.aiPopulation.finishIndividual(this.currentAIIndividual)
@@ -53,6 +53,7 @@ class AIGenetic {
         input.relativeHeightMultiplier = this.currentAIIndividual.chromosome.genes[2]
         input.heightsMultiplier = this.currentAIIndividual.chromosome.genes[3]
         input.holdOffset = this.currentAIIndividual.chromosome.genes[4]
+		input.lineClearMultiplier = this.currentAIIndividual.chromosome.genes[5]
     
         console.log("Generation " + this.aiPopulation.generation + ", Individual " + (this.aiPopulation.individualCount - 1))
         console.log("Gene 1 (garbage): " + this.currentAIIndividual.chromosome.genes[0])
@@ -60,6 +61,7 @@ class AIGenetic {
         console.log("Gene 3 (relativeHeight): " + this.currentAIIndividual.chromosome.genes[2])
         console.log("Gene 4 (height): " + this.currentAIIndividual.chromosome.genes[3])
         console.log("Gene 5 (hold offset): " + this.currentAIIndividual.chromosome.genes[4])
+        console.log("Gene 6 (lines cleared): " + this.currentAIIndividual.chromosome.genes[5])
 
         this.screen.addPlayfield(playfield)
     }

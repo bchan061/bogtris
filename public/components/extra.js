@@ -53,6 +53,16 @@ function blockChange() {
     }
 }
 
+function playEndless() {
+    game.resize(GraphicsConstants.DEFAULT_SCREEN_WIDTH, GraphicsConstants.DEFAULT_SCREEN_HEIGHT)
+	game.attachScreen(new EndlessScreen(game.application, game))
+}
+
+function playAI() {
+    game.resize(GraphicsConstants.MULTIPLAYER_SCREEN_WIDTH, GraphicsConstants.DEFAULT_SCREEN_HEIGHT)
+	game.attachScreen(new AIBattleScreen(game.application, game))
+}
+
 function clearGarbageTimeout() {
     clearInterval(timeoutID)
     timeoutID = null

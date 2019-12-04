@@ -426,6 +426,7 @@ class Playfield {
      */
     checkClear() {
         let cleared = this.board.checkForClear()
+        let wasBackToBack = this.back2Back
         this.score += Scoring.getScoreDelta(cleared, this.spinClear, this.combo, this.back2Back)
         if (cleared > 0) {
             this.combo += 1
@@ -465,7 +466,7 @@ class Playfield {
                 this.score += Scoring.PERFECT_CLEAR
                 this.offsetGarbage(Rules.PERFECT_CLEAR_GARBAGE)
             } else {
-                this.offsetGarbage(Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back))
+                this.offsetGarbage(Rules.computeGarbage(cleared, this.spinClear, this.combo, this.back2Back && wasBackToBack))
             }
         } else {
             this.combo = 0

@@ -13,7 +13,7 @@ class Population {
         this.generation = 1
         this.individualCount = 1
 
-        this.cutoff = 0.4
+        this.cutoff = 0.5
         this.lucky = 0.1
     }
 
@@ -29,7 +29,7 @@ class Population {
         for (let i = 0; i < amount; i++) {
             let genes = []
             for (let geneI = 0; geneI < amountOfGenes; geneI++) {
-                genes[geneI] = Math.random() * 50 - 25
+                genes[geneI] = Math.random() * 100 - 50
             }
             let individual = new Individual(new Chromosome(genes))
             this.individuals.push(individual)
@@ -190,7 +190,7 @@ class Chromosome {
 
     mutate(threshold) {
         for (let i = 0; i < this.genes.length; i++) {
-            let difference = Math.random() * threshold * 2
+            let difference = (Math.random() - 0.5) * threshold * 2
             this.genes[i] += difference
         }
     }

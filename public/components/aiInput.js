@@ -18,6 +18,7 @@ class AIInput extends Input {
         this.relativeHeightMultiplier = 1
         this.heightsMultiplier = 1
         this.holdOffset = 0
+		this.lineClearMultiplier = 1
 
         this.previousHeuristic = 0
 
@@ -47,6 +48,7 @@ class AIInput extends Input {
         + this.calculateHoles(newBoard) * this.holesMultiplier
         + relativeHeights * this.relativeHeightMultiplier
         + heights * this.heightsMultiplier
+		+ cleared * this.lineClearMultiplier
     }
 
     /**

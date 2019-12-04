@@ -37,8 +37,14 @@ class GraphicsConstants {
      * Returns the default width of the screen.
      */
     static get DEFAULT_SCREEN_WIDTH() {
-        //return 854
         return 480
+    }
+
+    /**
+     * Returns the default width of the screen when playing multiplayer
+     */
+    static get MULTIPLAYER_SCREEN_WIDTH() {
+        return 854
     }
 
     /**

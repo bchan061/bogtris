@@ -18,6 +18,7 @@ class EndlessScreen extends Screen {
 
     sendGarbage(sender, amount) {
         /* Ignore garbage. */
+        console.log(`${amount} garbage sent`)
     }
 
     /**

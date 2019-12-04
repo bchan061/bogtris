@@ -83,7 +83,7 @@ class Board {
     getSpawningLocation(tetromino) {
         let width = tetromino.getWidth()
         let x = Math.floor(this.width / 2 - width / 2)
-        let top = this.obstructTop - 2
+        let top = this.obstructTop - 3
 
         if (this.tetrominoCollides(tetromino, x, top)) {
             return null
