@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://www.ocf.berkeley.edu/~branchan/images/gifs/bogtris.gif" alt="Bogtris"/>
+  <br/>
+  <b>Bogtris - 2012</b>
+</p>
 # Bogtris
 
 **This is not affiliated with Tetris in any way, and should be viewed as purely educational.**
@@ -14,5 +19,5 @@ Gamepads are supported. The controls assume that the controller connected is an 
 
 ## Images
 
-![Showcasing DT cannon via SRS spins](https://www.ocf.berkeley.edu/~branchan/images/bogtris-1.png)
-![Genetic algorithm at work](https://www.ocf.berkeley.edu/~branchan/images/bogtris-2.png)
+<img src="https://www.ocf.berkeley.edu/~branchan/images/bogtris-1.png" alt="Showcasing DT cannon via SRS spins" width="250"/>
+<img src="https://www.ocf.berkeley.edu/~branchan/images/bogtris-2.png" alt="Genetic algorithm at work" width="250"/>
