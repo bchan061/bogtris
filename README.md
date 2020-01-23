@@ -3,7 +3,6 @@
   <br/>
   <b>Bogtris - 2012</b>
 </p>
-# Bogtris
 
 **This is not affiliated with Tetris in any way, and should be viewed as purely educational.**
 
@@ -16,6 +15,9 @@ Express is used to host the app server (at `index.js`), although any web server 
 PIXI.js and Howler.js includes are already included.
 
 Gamepads are supported. The controls assume that the controller connected is an XInput controller.
+
+## Balancing
+Multiplayer with Guideline Tetris is unfortunately plagued by 4-wide, a very strong and relatively easy setup that abuses the combo mechanic to send absurd amounts of messy garbage. Side 4-wide is easier to setup and virtually unbeatable in games with garbage blocking, while center 4-wide makes the user very hard to kill (unless fought with another 4-wide). Bogtris nerfs the combo mechanic such that combos level off at 4 line bonuses after a 10-combo. Note, however, that the lack of line clear delay makes combos arguably even more broken in Bogtris.
 
 ## Images
 
