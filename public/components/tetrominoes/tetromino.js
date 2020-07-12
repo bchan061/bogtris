@@ -205,4 +205,25 @@ class Tetromino {
         Sounds.rotate.play()
         return true
     }
+    
+    /**
+     * Returns the offset of the spawning tetromino from the bottom of the box.
+     */
+    getOffsetFromBottom() {
+        // Cache result
+        if (this.offsetFromBottom) {
+            return this.offsetFromBottom
+        }
+        
+        let rotationBox = this.rotationBoxes[0]
+        for (let y = this.getHeight() - 1; y >= 0; y--) {
+            for (let x = 0; x <= this.getWidth(); x++) {
+                if (rotationBox[y][x] === 1) {
+                    this.offsetFromBottom = this.getHeight() - 1 - y
+                    return this.offsetFromBottom
+                }
+            }
+        }
+        return y;
+    }
 }

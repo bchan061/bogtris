@@ -83,7 +83,7 @@ class Board {
     getSpawningLocation(tetromino) {
         let width = tetromino.getWidth()
         let x = Math.floor(this.width / 2 - width / 2)
-        let top = this.obstructTop - 3
+        let top = this.obstructTop - 1 - tetromino.getOffsetFromBottom()
 
         if (this.tetrominoCollides(tetromino, x, top)) {
             return null
@@ -194,7 +194,7 @@ class Board {
             for (let tX = 0; tX < tetromino.getWidth(); tX++) {
                 let value = tetromino.getRotationBox()[tY][tX]
 
-                if (value == 1) {
+                if (value === 1) {
                     let blockX = tX + x
                     let blockY = tY + y
                     

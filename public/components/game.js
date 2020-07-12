@@ -39,6 +39,10 @@ class Game {
         this.application.height = height
         this.application.renderer.resize(width, height)
     }
+    
+    reset() {
+       this.screen.reset() 
+    }
 
     update(delta, elapsed) {
         if (this.screen != null) {

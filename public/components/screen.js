@@ -7,7 +7,7 @@ class Screen {
         this.application = application
         this.game = game
 
-        this.application.stage.addChild(this.stage)
+        this.attach()
     }
 
     /**
@@ -20,9 +20,21 @@ class Screen {
     }
 
     /**
+     * Attaches the current screen onto the application.
+     */
+    attach() {
+        this.application.stage.addChild(this.stage)
+    }
+
+    /**
      * Detaches the current screen from the application.
      */
     detach() {
         this.application.stage.removeChild(this.stage)
+    }
+    
+    reset() {
+        this.detach()
+        this.attach()
     }
 }

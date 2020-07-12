@@ -82,21 +82,22 @@
                 <button onClick="javascript:addGarbageTimeout(3)">Add Garbage Every 3 Seconds</button>
                 <button onClick="javascript:clearGarbageTimeout(1)">Clear Timeout</button>
                 <span>Speed: 
-                    <select id="speed" onchange="javascript:speedChange()">
+                    <select id="speed" onchange="javascript:speedChange()" autocomplete="off">
                         <option value="normal" selected> Normal </option>
                         <option value="fast"> Fast </option>
                         <option value="20g"> Instant (20G) </option>
                     </select>
                 </span>
                 <span>Block Skin: 
-                    <select id="block" onchange="javascript:blockChange()">
+                    <select id="block" onchange="javascript:blockChange()" autocomplete="off">
                         <option value="normal" selected> Normal </option>
                         <option value="noborder"> No Border </option>
                     </select>
                 </span>
 				
 				<button onClick="javascript:playEndless()">Play Endless</button>
-				<button onClick="javascript:playAI()">Play Against AI</button>
+				<button onClick="javascript:playAI()">Train AI</button>
+				<button onClick="javascript:resetGame()">Reset Game</button>
             </div>
         </div>
     </body>

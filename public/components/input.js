@@ -34,6 +34,7 @@ class Input {
         this.addKey(new Key("Soft drop", 40))
         this.addKey(new Key("Hard drop", 38))
         this.addKey(new Key("Hold", 32))
+        this.addKey(new Key("Reset", 82))
     }
 
     /**
@@ -169,6 +170,10 @@ class Input {
         } else {
             this.softDropTimer.reset()
             this.playfield.dropActive = true
+        }
+        
+        if (this.keys["Reset"].isJustPressed()) {
+            resetGame()
         }
     }
 }

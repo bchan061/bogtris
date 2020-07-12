@@ -1,15 +1,6 @@
 class AIBattleScreen extends Screen {
     constructor(application, game) {
         super(application, game)
-        this.playfields = []
-
-        let playfieldOne = new Playfield(this, new PIXI.Point(0, 0))
-        let inputOne = new Input(playfieldOne)
-        this.game.inputDelegator.addInput(inputOne)
-        playfieldOne.setInput(inputOne)
-        this.addPlayfield(playfieldOne)
-        
-        this.aiGenetic = new AIGenetic(this)
     }
 
     /**
@@ -70,6 +61,20 @@ class AIBattleScreen extends Screen {
         this.game.inputDelegator.update(delta, elapsed)
 
         this.aiGenetic.update(delta, elapsed)
+    }
+
+    attach() {
+        super.attach()
+
+        this.playfields = []
+
+        let playfieldOne = new Playfield(this, new PIXI.Point(0, 0))
+        let inputOne = new Input(playfieldOne)
+        this.game.inputDelegator.addInput(inputOne)
+        playfieldOne.setInput(inputOne)
+        this.addPlayfield(playfieldOne)
+        
+        this.aiGenetic = new AIGenetic(this)
     }
 
     detach() {

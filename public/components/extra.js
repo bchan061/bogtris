@@ -67,3 +67,11 @@ function clearGarbageTimeout() {
     clearInterval(timeoutID)
     timeoutID = null
 }
+
+function resetGame() {
+    game.reset()
+
+    // Reapply selections
+    speedChange()
+    blockChange()
+}
