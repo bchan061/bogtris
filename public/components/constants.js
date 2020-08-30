@@ -27,6 +27,10 @@ class Colors {
         return 0xFF0000
     }
 
+    static get PINK() {
+        return 0xFFC0CB
+    }
+
     static get GRAY() {
         return 0x999999
     }
@@ -85,5 +89,12 @@ class Timings {
      */
     static get ARR() {
         return 0.033
+    }
+
+    /**
+     * The delay before the next tetromino spawns.
+     */
+    static get ENTRY_DELAY() {
+        return 0.067
     }
 }

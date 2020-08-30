@@ -133,6 +133,7 @@ class InputDelegator {
             this.simulateKeyWithGamepad("Hard drop", gamepad.buttons[12])
             this.simulateKeyWithGamepad("Hold", gamepad.buttons[4])
             this.simulateKeyWithGamepad("Hold", gamepad.buttons[5])
+            this.simulateKeyWithGamepad("Reset", gamepad.buttons[8])
         }
     }
 

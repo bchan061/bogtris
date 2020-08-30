@@ -29,6 +29,40 @@ class Utilities {
     }
 
     /**
+     * Returns a random element in the array.
+     * @param {array} array the array
+     */
+    static randomElementInArray(array) {
+        return array[Math.floor(Math.random() * array.length)]
+    }
+
+    /**
+     * Shuffles the array inplace.
+     * @param {array} array the array
+     */
+    static shuffleArray(array) {
+        /* Fisher-Yates */
+
+        for (let i = array.length - 1; i >= 1; i--) {
+            let j = Math.floor(Math.random() * (i + 1))
+            let temp = array[j]
+            array[j] = array[i]
+            array[i] = temp
+        }
+
+        return array
+    }
+
+    /**
+     * Checks if two arrays have the same elements.
+     * @param {array} arr1 one array
+     * @param {array} arr2 another array
+     */
+    static containSameElements(arr1, arr2) {
+        return arr1.every(item => arr2.includes(item)) && arr2.every(item => arr1.includes(item))
+    }
+
+    /**
      * Returns a copy of a 2D array.
      * @param {object} array the 2D array to copy
      */

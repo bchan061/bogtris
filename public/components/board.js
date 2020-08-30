@@ -234,9 +234,15 @@ class Board {
      * @param {object} tetromino the tetromino to draw
      * @param {object} location the location of the tetromino
      */
-    drawGhostPieces(tetromino, location) {
+    drawGhostPieces(tetromino, location, options = {}) {
         let x = location.x
         let y = location.y
+
+        let rotation = tetromino.currentShapeIndex
+
+        if (options.rotation !== undefined) {
+            tetromino.currentShapeIndex = options.rotation
+        }
 
         /* First: find the offset needed until the Tetromino offsets something */
         let offset = 0
@@ -264,12 +270,17 @@ class Board {
                     
                     let spriteBlock = this.getSpriteBlock(blockX, blockY)
                     if (spriteBlock != null) {
-                        spriteBlock.setColor(tetromino.color)
+                        spriteBlock.setColor(options.color ? options.color : tetromino.color)
                         spriteBlock.setActive(true)
-                        spriteBlock.setOpacity(0.5)
+                        spriteBlock.setOpacity(options.opacity ? options.opacity : 0.5)
                     }
                 }
             }
+        }
+
+        if (options.rotation !== undefined) {
+            // Reset back to original rotation
+            tetromino.currentShapeIndex = rotation
         }
 
         return true

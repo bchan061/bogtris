@@ -13,13 +13,24 @@ class Tetromino {
         this.color = color
         this.shape = originalShape
         this.rotationBoxes = []
+        this.leftmostX = []
         this.currentShapeIndex = 0
-        this.sprites = [new PIXI.Container(), new PIXI.Container(), new PIXI.Container()]
-        this.usedSprites = [false, false, false]
 
         this.generateRotationBoxes()
-
+        this.initSprites(4)
         this.createSprites()
+    }
+
+    /**
+     * Initiate the number of sprites to use.
+     */
+    initSprites(times = 3) {
+        this.sprites = []
+        this.usedSprites = []
+        for (let i = 0; i < times; i++) {
+            this.sprites[i] = new PIXI.Container()
+            this.usedSprites[i] = false
+        }
     }
 
     /**
@@ -217,7 +228,7 @@ class Tetromino {
         
         let rotationBox = this.rotationBoxes[0]
         for (let y = this.getHeight() - 1; y >= 0; y--) {
-            for (let x = 0; x <= this.getWidth(); x++) {
+            for (let x = 0; x < this.getWidth(); x++) {
                 if (rotationBox[y][x] === 1) {
                     this.offsetFromBottom = this.getHeight() - 1 - y
                     return this.offsetFromBottom
@@ -225,5 +236,26 @@ class Tetromino {
             }
         }
         return y;
+    }
+
+    /**
+     * Returns the X position that the left-most block of the tetromino is on.
+     */
+    getLeftmostX(orientation = this.currentShapeIndex) {
+        if (this.leftmostX[orientation]) {
+            return this.leftmostX[orientation]
+        }
+
+        let rotationBox = this.rotationBoxes[orientation]
+        for (let x = 0; x < this.getWidth(); x++) {
+            for (let y = 0; y < this.getHeight(); y++) {
+                if (rotationBox[y][x] === 1) {
+                    this.leftmostX[orientation] = x
+                    return this.leftmostX[orientation]
+                }
+            }
+        }
+
+        return x
     }
 }

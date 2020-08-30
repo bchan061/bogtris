@@ -6,7 +6,7 @@ class RandomGenerator {
      * Initializes a random generator, with a new bag and queue.
      * @param {object} tetrominoes a Tetrominoes object, specified in Tetrominoes.js
      */
-    constructor(tetrominoes) {
+    constructor(tetrominoes, nextPieces = Rules.NEXT_PIECES) {
         this.queue = []
         this.queueLength = 7
         this.bag = []
@@ -20,6 +20,7 @@ class RandomGenerator {
             tetrominoes.zTetromino,
             tetrominoes.oTetromino,
         ]
+        this.nextPieces = nextPieces
 
         this.nextOffset = new PIXI.Point(250, 50)
         this.nextContainer = new PIXI.Container()
@@ -36,7 +37,7 @@ class RandomGenerator {
         )
         this.nextContainer.addChild(this.nextText)
         this.nextContainers = []
-        for (let i = 0; i < Rules.NEXT_PIECES; i++) {
+        for (let i = 0; i < this.nextPieces; i++) {
             this.nextContainers[i] = new PIXI.Container()
             this.nextContainers[i].position.set(
                 (10 * GraphicsConstants.BLOCK_SIZE) + 4 * GraphicsConstants.BLOCK_SIZE,
@@ -88,7 +89,7 @@ class RandomGenerator {
 
         /* Remove the top container and push it to the bottom. */
         removedContainer.y = 8 * GraphicsConstants.BLOCK_SIZE +
-            ((Rules.NEXT_PIECES - 1) * 3 * GraphicsConstants.BLOCK_SIZE)
+            ((this.nextPieces - 1) * 3 * GraphicsConstants.BLOCK_SIZE)
         removedContainer.alpha = 0.4
         this.nextContainers.shift()
         this.nextContainers.push(removedContainer)
@@ -107,7 +108,7 @@ class RandomGenerator {
             }
         }
 
-        let newTetromino = this.queue[Rules.NEXT_PIECES]
+        let newTetromino = this.queue[this.nextPieces]
         let newSprite = newTetromino.getSprite()
         if (newSprite != null) {
             removedContainer.addChild(newSprite)
@@ -118,14 +119,7 @@ class RandomGenerator {
      * Shuffles the array of tetrominoes via Fisher-Yates.
      */
     shuffleTetrominoes() {
-        /* Fisher-Yates */
-
-        for (let i = this.tetrominoArray.length - 1; i >= 1; i--) {
-            let j = Math.floor(Math.random() * (i + 1))
-            let temp = this.tetrominoArray[j]
-            this.tetrominoArray[j] = this.tetrominoArray[i]
-            this.tetrominoArray[i] = temp
-        }
+        Utilities.shuffleArray(this.tetrominoArray)
     }
 
     /**
@@ -157,6 +151,17 @@ class RandomGenerator {
             let bagTetromino = this.bag.shift()
 
             this.queue.push(bagTetromino)
+        }
+    }
+
+    /**
+     * Clears the whole queue and bag.
+     */
+    clearQueueAndBag() {
+        this.createNewBag()
+        let previousQueueLength = this.queue.length
+        for (let i = 0; i < previousQueueLength; i++) {
+            this.popFromQueue()
         }
     }
 

@@ -2,10 +2,10 @@ var RULES_DROP = 1
 
 class Rules {
     /**
-     * The max rotations acceptable before the piece is automatically placed down without any leeway.
+     * The max amount of lock delay resets that can be done before the piece forcefully locks.
      */
-    static get MAX_ROTATIONS() {
-        return 20
+    static get MAX_RESET() {
+        return 25
     }
 
     /**
@@ -53,6 +53,20 @@ class Rules {
      */
     static get PERFECT_CLEAR_GARBAGE() {
         return 10
+    }
+
+    /**
+     * Whether the initial hold system (IHS) is enabled.
+     */
+    static get IHS_ENABLED() {
+        return false
+    }
+
+    /**
+     * Whether the initial rotation system (IRS) is enabled.
+     */
+    static get IRS_ENABLED() {
+        return false
     }
 
     /**

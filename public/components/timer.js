@@ -16,12 +16,16 @@ class Timer {
     update(elapsed) {
         this.elapsed += elapsed
 
-        if (this.elapsed >= this.tickTime) {
+        if (this.isFulfilled()) {
             this.elapsed -= this.tickTime
             if (this.onTick != null) {
                 this.onTick()
             }
         }
+    }
+
+    isFulfilled() {
+        return this.elapsed >= this.tickTime
     }
 
     active() {
@@ -54,17 +58,33 @@ class CountdownTimer extends Timer {
     update(elapsed) {
         if (this.active) {
             this.elapsed -= elapsed
-            if (!this.done && this.elapsed <= 0) {
+            if (!this.done && this.isFulfilled()) {
                 this.done = true
-                if (this.onTick != null) {
+                if (this.onTick !== null) {
                     this.onTick()
                 }
             }
         }
     }
 
+    isFulfilled() {
+        return this.elapsed <= 0
+    }
+
     active() {
         return this.active
+    }
+}
+
+class CountedCountdownTimer extends CountdownTimer {
+    reset() {
+        super.reset()
+        this.counter += 1
+    }
+
+    resetWithCounter() {
+        this.reset()
+        this.counter = 0
     }
 }
 

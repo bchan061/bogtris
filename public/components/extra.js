@@ -15,7 +15,7 @@ function addGarbageTimeout(time) {
 function speedChange() {
     let selectSpeed = document.getElementById("speed")
     let playfield = game.screen.playfield
-    if (playfield !== null) {
+    if (playfield) {
         playfield.instantDrop = false
         switch (selectSpeed.value) {
             case "fast":
@@ -34,7 +34,7 @@ function speedChange() {
 function blockChange() {
     let selectSpeed = document.getElementById("block")
     let playfield = game.screen.playfield
-    if (playfield !== null) {
+    if (playfield) {
         playfield.instantDrop = false
         switch (selectSpeed.value) {
             case "noborder":
@@ -63,15 +63,30 @@ function playAI() {
 	game.attachScreen(new AIBattleScreen(game.application, game))
 }
 
+function playFinesse() {
+    game.resize(GraphicsConstants.DEFAULT_SCREEN_WIDTH, GraphicsConstants.DEFAULT_SCREEN_HEIGHT)
+	game.attachScreen(new FinesseScreen(game.application, game))
+}
+
 function clearGarbageTimeout() {
     clearInterval(timeoutID)
     timeoutID = null
 }
 
-function resetGame() {
-    game.reset()
-
-    // Reapply selections
+function reapplyChanges() {
     speedChange()
     blockChange()
+}
+
+function resetGame() {
+    game.reset()
+    reapplyChanges()
+}
+
+function finesseChange() {
+    let finesseTetromino = document.getElementById("finesse")
+    FinesseScreen.option = finesseTetromino.value
+    if (game.screen instanceof FinesseScreen) {
+        resetGame()
+    }
 }

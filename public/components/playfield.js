@@ -1,29 +1,30 @@
 /**
  * A playfield for the game.
  */
+
 class Playfield {
     /**
      * Constructs a playfield.
      */
-    constructor(screen, offset) {
+    constructor(screen, offset, options = {}) {
         this.screen = screen
         this.stage = new PIXI.Container()
         this.board = new Board(this)
         this.tetrominoes = new Tetrominoes()
-        this.randomGenerator = new RandomGenerator(this.tetrominoes)
-        this.stage.addChild(this.randomGenerator.nextContainer)
         this.elapsed = 0
         this.width = 20 * GraphicsConstants.BLOCK_SIZE
         this.garbageToAdd = 0
 
         this.dropTimer = new Timer(Rules.DROP_TIMER, this.perpetualDropTetromino.bind(this))
         this.dropActive = true
-        this.inactiveTimer = new CountdownTimer(Rules.INACTIVE_TIMER, this.onInactivity.bind(this))
+        this.inactiveTimer = new CountedCountdownTimer(Rules.INACTIVE_TIMER, this.onInactivity.bind(this))
+        this.entryDelayTimer = new CountdownTimer(Timings.ENTRY_DELAY, this.getNextTetromino.bind(this))
         this.spinClear = 0
         this.rotations = 0
         this.score = 0
         this.combo = 0
         this.back2Back = false
+        this.canHold = true
 
         this.boardOffset = new PIXI.Point(18, 18)
         this.board.stage.position = this.boardOffset        
@@ -32,7 +33,6 @@ class Playfield {
         this.gameOver = false
         this.holdTetromino = null
         this.blockHold = null
-
         this.instantDrop = false
 
         this.stage.position = offset
@@ -42,7 +42,25 @@ class Playfield {
         this.createScore()
         this.createStatus()
 
+        this.randomGenerator = new RandomGenerator(this.tetrominoes)
+        this.applyOptions(options)
+        this.stage.addChild(this.randomGenerator.nextContainer)
+
         this.getNextTetromino()
+    }
+
+    applyOptions(options) {
+        if (options.randomGenerator) {
+            this.randomGenerator = new options.randomGenerator(this.tetrominoes)
+        }
+        if (options.noScore) {
+            this.scoreText.visible = false
+        }
+        if (options.noHold) {
+            this.holdContainer.visible = false
+            this.holdText.visible = false
+            this.canHold = false
+        }
     }
 
     /**
@@ -156,6 +174,8 @@ class Playfield {
      * Gets the next tetromino in the queue
      */
     getNextTetromino() {
+        this.entryDelayTimer.reset()
+        this.entryDelayTimer.deactivate()
         this.currentTetromino = this.randomGenerator.popFromQueue()
         let nextLocation = this.board.getSpawningLocation(this.currentTetromino)
         if (nextLocation == null) {
@@ -163,7 +183,7 @@ class Playfield {
         } else {
             this.tetrominoLocation = nextLocation
         }
-        this.inactiveTimer.reset()
+        this.inactiveTimer.resetWithCounter()
         this.inactiveTimer.deactivate()
         this.rotations = 0
     }
@@ -207,7 +227,6 @@ class Playfield {
         Sounds.forceDrop.play()
         this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
         this.droppedTetromino()
-        this.getNextTetromino()
     }
 
     /**
@@ -215,8 +234,9 @@ class Playfield {
      * Returns if succeeded.
      * @param {number} x the relative x displacement
      * @param {number} y the relative y displacement
+     * @param {boolean} arr whether ARR was used to move the piece or not
      */
-    tryMove(x, y) {
+    tryMove(x, y, arr = false) {
         if (
             this.board.tetrominoCollides(
                 this.currentTetromino,
@@ -228,10 +248,17 @@ class Playfield {
         } else {
             this.tetrominoLocation.x += x
             this.tetrominoLocation.y += y
-            this.inactiveTimer.deactivate()
+            this.inactiveTimer.reset()
+            if (y != 0) {
+                this.dropTimer.reset()
+            }
             this.spinClear = 0
 
-            Sounds.move.play()
+            if (this.shouldForcefullyLock) {
+                this.onInactivity()
+            } else {
+                Sounds.move.play()
+            }
 
             return true
         }
@@ -243,9 +270,11 @@ class Playfield {
      * @param {boolean} clockwise whether to rotate the tetromino clockwise or not
      */
     tryRotate(clockwise) {
+        if (!Rules.IRS_ENABLED && this.entryDelayTimer.active) {
+            return
+        }
         let result = this.currentTetromino.tryRotate(this.board, this.tetrominoLocation, clockwise)
         if (result != -1) {
-            this.inactiveTimer.reset()
             if (this.currentTetromino == this.tetrominoes.tTetromino) {
                 this.spinClear = false
 
@@ -262,7 +291,7 @@ class Playfield {
 
             this.rotations += 1
             this.inactiveTimer.reset()
-            this.dropTimer.reset()
+            // this.dropTimer.reset()
             return true
         } else {
             return false
@@ -273,57 +302,59 @@ class Playfield {
      * Soft drops the tetromino down.
      */
     softDropTetromino() {
-        if (
-            !this.board.tetrominoCollides(
-                this.currentTetromino,
-                this.tetrominoLocation.x,
-                this.tetrominoLocation.y + 1
-            )
-        ) {
+        if (this.entryDelayTimer.active) {
+            return
+        }
+        if (!this.onTop) {
             this.tetrominoLocation.y += 1
             this.score += Scoring.SOFT_DROP
             Sounds.drop.play()
             this.spinClear = 0
         } else {
             this.inactiveTimer.activate()
-            if (this.rotations >= Rules.MAX_ROTATIONS) {
+            if (this.shouldForcefullyLock) {
                 this.onInactivity()
             }
         }
+    }
+
+
+    get shouldForcefullyLock() {
+        return this.inactiveTimer.counter >= Rules.MAX_RESET && this.onTop
     }
 
     /**
      * Drop the tetromino constantly.
      */
     perpetualDropTetromino() {
-        if (
-            this.board.tetrominoCollides(
-                this.currentTetromino,
-                this.tetrominoLocation.x,
-                this.tetrominoLocation.y + 1
-            )
-        ) {
+        if (this.onTop) {
             this.inactiveTimer.activate()
-            if (this.rotations >= Rules.MAX_ROTATIONS) {
+            if (this.shouldForcefullyLock) {
                 this.onInactivity()
             }
         } else {
             this.tetrominoLocation.y += 1
+            this.inactiveTimer.reset()
             this.spinClear = 0
         }
+    }
+
+    /**
+     * Returns whether the tetromino is on top of terrain.
+     */
+    get onTop() {
+        return this.board.tetrominoCollides(
+            this.currentTetromino,
+            this.tetrominoLocation.x,
+            this.tetrominoLocation.y + 1
+        )
     }
 
     /**
      * Plants the tetromino down to the lowest available point.
      */
     plantTetromino() {
-        while (
-            !this.board.tetrominoCollides(
-                this.currentTetromino,
-                this.tetrominoLocation.x,
-                this.tetrominoLocation.y + 1
-            )
-        ) {
+        while (!this.onTop) {
             this.tetrominoLocation.y += 1
             this.score += Scoring.HARD_DROP
             this.spinClear = 0
@@ -334,12 +365,14 @@ class Playfield {
      * Hard drops the tetromino down.
      */
     hardDropTetromino() {
+        if (this.entryDelayTimer.active) {
+            return
+        }
         this.plantTetromino()
         Sounds.hardDrop.play()
 
         this.board.placeTetromino(this.currentTetromino, this.tetrominoLocation.x, this.tetrominoLocation.y)
         this.droppedTetromino()
-        this.getNextTetromino()
     }
 
     /**
@@ -355,6 +388,7 @@ class Playfield {
             this.addGarbage(this.garbageToAdd)
             this.garbageToAdd = 0
         }
+        this.entryDelayTimer.activate()
     }
 
     /**
@@ -372,7 +406,10 @@ class Playfield {
      * Returns whether it is allowed or not.
      */
     hold() {
-        if (!this.blockHold) {
+        if (!Rules.IHS_ENABLED && this.entryDelayTimer.active) {
+            return
+        }
+        if (!this.blockHold && this.canHold) {
             let previouslyHeldTetromino = this.holdTetromino
 
             if (this.holdContainer.children.length == 1) {
@@ -411,7 +448,7 @@ class Playfield {
             this.spinClear = 0
             this.rotations = 0
             this.inactiveTimer.deactivate()
-            this.inactiveTimer.reset()
+            this.inactiveTimer.resetWithCounter()
             Sounds.hold.play()
 
             return true
@@ -521,11 +558,12 @@ class Playfield {
                 this.plantTetromino()
             }
 
-            if (this.dropActive) {
+            if (this.dropActive && !this.entryDelayTimer.active) {
                 this.dropTimer.update(elapsed)
             }
 
             this.inactiveTimer.update(elapsed)
+            this.entryDelayTimer.update(elapsed)
 
             this.board.update()
             this.board.drawGhostPieces(this.currentTetromino, this.tetrominoLocation)

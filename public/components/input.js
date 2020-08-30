@@ -91,9 +91,9 @@ class Input {
      */
     arr() {
         if (this.arrRight) {
-            this.playfield.tryMove(1, 0)
+            this.playfield.tryMove(1, 0, true)
         } else {
-            this.playfield.tryMove(-1, 0)
+            this.playfield.tryMove(-1, 0, true)
         }
     }
 
@@ -111,6 +111,10 @@ class Input {
      * @param {number} elapsed the time elapsed from the previous frame
      */
     update(delta, elapsed) {
+        if (this.keys["Reset"].isJustPressed()) {
+            resetGame()
+        }
+        
         if (!this.active) {
             return
         }
@@ -170,10 +174,6 @@ class Input {
         } else {
             this.softDropTimer.reset()
             this.playfield.dropActive = true
-        }
-        
-        if (this.keys["Reset"].isJustPressed()) {
-            resetGame()
         }
     }
 }

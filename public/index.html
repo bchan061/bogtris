@@ -36,6 +36,8 @@
 
         <script type="text/javascript" src="components/rules.js"> </script>
         <script type="text/javascript" src="components/randomGenerator.js"> </script>
+        <script type="text/javascript" src="components/finesse.js"> </script>
+        <script type="text/javascript" src="components/finesseRandomGenerator.js"> </script>
         <script type="text/javascript" src="components/key.js"> </script>
         <script type="text/javascript" src="components/inputDelegator.js"> </script>
         <script type="text/javascript" src="components/input.js"> </script>
@@ -47,6 +49,7 @@
         <script type="text/javascript" src="components/screen/aiBattleScreen.js"> </script>
         <script type="text/javascript" src="components/screen/aiBattleTogetherScreen.js"> </script>
         <script type="text/javascript" src="components/screen/endlessScreen.js"> </script>
+        <script type="text/javascript" src="components/screen/finesseScreen.js"> </script>
 
         <script type="text/javascript" src="components/playfield.js"> </script>
         <script type="text/javascript" src="components/game.js"> </script>
@@ -96,7 +99,21 @@
                 </span>
 				
 				<button onClick="javascript:playEndless()">Play Endless</button>
-				<button onClick="javascript:playAI()">Train AI</button>
+                <button onClick="javascript:playAI()">Train AI</button>
+                
+                <span>Finesse: 
+                    <select id="finesse" onchange="javascript:finesseChange()" autocomplete="off">
+                        <option value="all" selected> All </option>
+                        <option value="o"> O </option>
+                        <option value="i"> I </option>
+                        <option value="s"> S </option>
+                        <option value="z"> Z </option>
+                        <option value="l"> L </option>
+                        <option value="j"> J </option>
+                        <option value="t"> T </option>
+                    </select>
+                </span>
+				<button onClick="javascript:playFinesse()">Learn Finesse</button>
 				<button onClick="javascript:resetGame()">Reset Game</button>
             </div>
         </div>
