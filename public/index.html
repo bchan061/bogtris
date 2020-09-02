@@ -79,42 +79,45 @@
                 </div>
             </div>
 
-            <div id="extra">
-                <button onClick="javascript:addGarbage(1)">Add Single Garbage</button>
-                <button onClick="javascript:addGarbage(10)">Add Ten Garbage</button>
-                <button onClick="javascript:addGarbageTimeout(3)">Add Garbage Every 3 Seconds</button>
-                <button onClick="javascript:clearGarbageTimeout(1)">Clear Timeout</button>
-                <span>Speed: 
-                    <select id="speed" onchange="javascript:speedChange()" autocomplete="off">
-                        <option value="normal" selected> Normal </option>
-                        <option value="fast"> Fast </option>
-                        <option value="20g"> Instant (20G) </option>
-                    </select>
-                </span>
-                <span>Block Skin: 
-                    <select id="block" onchange="javascript:blockChange()" autocomplete="off">
-                        <option value="normal" selected> Normal </option>
-                        <option value="noborder"> No Border </option>
-                    </select>
-                </span>
-				
-				<button onClick="javascript:playEndless()">Play Endless</button>
-                <button onClick="javascript:playAI()">Train AI</button>
-                
-                <span>Finesse: 
-                    <select id="finesse" onchange="javascript:finesseChange()" autocomplete="off">
-                        <option value="all" selected> All </option>
-                        <option value="o"> O </option>
-                        <option value="i"> I </option>
-                        <option value="s"> S </option>
-                        <option value="z"> Z </option>
-                        <option value="l"> L </option>
-                        <option value="j"> J </option>
-                        <option value="t"> T </option>
-                    </select>
-                </span>
-				<button onClick="javascript:playFinesse()">Learn Finesse</button>
-				<button onClick="javascript:resetGame()">Reset Game</button>
+            <div id="extraContainer">
+                <div id="extra">
+                    <a id="extraMenu" href="javascript:onExtraMenuClick()">&#x2630;</a>
+                    <button onClick="javascript:addGarbage(1)">Add Single Garbage</button>
+                    <button onClick="javascript:addGarbage(10)">Add Ten Garbage</button>
+                    <button onClick="javascript:addGarbageTimeout(3)">Add Garbage Every 3 Seconds</button>
+                    <button onClick="javascript:clearGarbageTimeout(1)">Clear Timeout</button>
+                    <span>Speed: 
+                        <select id="speed" onchange="javascript:speedChange()" autocomplete="off">
+                            <option value="normal" selected> Normal </option>
+                            <option value="fast"> Fast </option>
+                            <option value="20g"> Instant (20G) </option>
+                        </select>
+                    </span>
+                    <span>Block Skin: 
+                        <select id="block" onchange="javascript:blockChange()" autocomplete="off">
+                            <option value="normal" selected> Normal </option>
+                            <option value="noborder"> No Border </option>
+                        </select>
+                    </span>
+                    
+                    <button onClick="javascript:playEndless()">Play Endless</button>
+                    <button onClick="javascript:playAI()">Train AI</button>
+                    
+                    <span>Finesse: 
+                        <select id="finesse" onchange="javascript:finesseChange()" autocomplete="off">
+                            <option value="all" selected> All </option>
+                            <option value="o"> O </option>
+                            <option value="i"> I </option>
+                            <option value="s"> S </option>
+                            <option value="z"> Z </option>
+                            <option value="l"> L </option>
+                            <option value="j"> J </option>
+                            <option value="t"> T </option>
+                        </select>
+                    </span>
+                    <button onClick="javascript:playFinesse()">Learn Finesse</button>
+                    <button onClick="javascript:resetGame()">Reset Game</button>
+                </div>
             </div>
         </div>
     </body>

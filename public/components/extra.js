@@ -90,3 +90,15 @@ function finesseChange() {
         resetGame()
     }
 }
+
+function onExtraMenuClick() {
+    let extra = document.getElementById("extra")
+    if (!extra.style.visibility) {
+        extra.style.visibility = 'hidden'
+    }
+    if (extra.style.visibility === 'hidden') {
+        extra.style.visibility = 'visible'
+    } else {
+        extra.style.visibility = 'hidden'
+    }
+}
