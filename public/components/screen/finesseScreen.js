@@ -104,6 +104,7 @@ class FinesseScreen extends Screen {
         }
 
         this.currentFinesse = this.finessesToTest.shift()
+        this.requeued = false
         return this.currentFinesse
     }
 
@@ -220,6 +221,12 @@ class FinesseScreen extends Screen {
         let correctSteps = [...steps]
         correctSteps.push("Drop")
         this.finesseText.text = correctSteps.join(" -> ")
+
+        if (!this.requeued) {
+            // Requeue finesse at the end
+            this.finessesToTest.push(this.currentFinesse)
+            this.requeued = true
+        }
     }
 
     checkSteps(correctSteps, playerSteps, strict = true) {
