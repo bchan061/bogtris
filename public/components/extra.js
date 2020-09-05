@@ -93,12 +93,12 @@ function finesseChange() {
 
 function onExtraMenuClick() {
     let extra = document.getElementById("extra")
-    if (!extra.style.visibility) {
-        extra.style.visibility = 'hidden'
+    if (!extra.style.display) {
+        extra.style.display = 'none'
     }
-    if (extra.style.visibility === 'hidden') {
-        extra.style.visibility = 'visible'
+    if (extra.style.display === 'none') {
+        extra.style.display = 'flex'
     } else {
-        extra.style.visibility = 'hidden'
+        extra.style.display = 'none'
     }
 }
